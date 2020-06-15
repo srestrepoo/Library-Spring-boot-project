@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/library.iml" filepath="$PROJECT_DIR$/library.iml" />
+      <module fileurl="file://$PROJECT_DIR$/library-api/library-api.iml" filepath="$PROJECT_DIR$/library-api/library-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/library-commons/library-commons.iml" filepath="$PROJECT_DIR$/library-commons/library-commons.iml" />
+      <module fileurl="file://$PROJECT_DIR$/library-mapping/library-mapping.iml" filepath="$PROJECT_DIR$/library-mapping/library-mapping.iml" />
+      <module fileurl="file://$PROJECT_DIR$/library-persistance/library-persistance.iml" filepath="$PROJECT_DIR$/library-persistance/library-persistance.iml" />
+      <module fileurl="file://$PROJECT_DIR$/library-services/library-services.iml" filepath="$PROJECT_DIR$/library-services/library-services.iml" />
+    </modules>
+  </component>
+</project>
