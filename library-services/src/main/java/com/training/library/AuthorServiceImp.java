@@ -1,6 +1,7 @@
 package com.training.library;
 
 import com.training.library.dtos.AuthorDto;
+import com.training.library.dtos.AuthorViewDto;
 import com.training.library.entities.Author;
 import com.training.library.mappers.AuthorMapper;
 import com.training.library.repositories.AuthorRepository;
@@ -17,10 +18,9 @@ public class AuthorServiceImp implements IAuthorService{
     AuthorRepository authorRepository;
 
     @Override
-    public List<AuthorDto> getAllAuthors() {
-
+    public List<AuthorViewDto> getAllAuthors() {
         return authorRepository.findAll().stream()
-                .map(author -> AuthorMapper.INSTANCE.authorToAuthorDto(author))
+                .map(author -> AuthorMapper.INSTANCE.authorToAuthorViewDto(author))
                 .collect(Collectors.toList());
     }
 

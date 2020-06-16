@@ -2,7 +2,7 @@ package com.training.library.controllers;
 
 import com.training.library.IAuthorService;
 import com.training.library.dtos.AuthorDto;
-import com.training.library.entities.Author;
+import com.training.library.dtos.AuthorViewDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +18,7 @@ public class AuthorController {
     IAuthorService authorService;
 
     @GetMapping()
-    public ResponseEntity<List<AuthorDto>> getAll() {
+    public ResponseEntity<List<AuthorViewDto>> getAll() {
         return new ResponseEntity<>(authorService.getAllAuthors(), HttpStatus.OK);
     }
 

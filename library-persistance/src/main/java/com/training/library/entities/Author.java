@@ -1,17 +1,18 @@
 package com.training.library.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
+@EqualsAndHashCode(exclude="books")
 @Table(name = "Author")
 public class Author {
 
@@ -28,5 +29,7 @@ public class Author {
     @Column(name = "native_language")
     private String nativeLanguage;
 
+    @OneToMany(mappedBy = "author")
+    Set<Book> books;
 
 }

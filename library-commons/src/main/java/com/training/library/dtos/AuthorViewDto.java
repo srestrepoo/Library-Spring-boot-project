@@ -5,18 +5,18 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AuthorDto {
+public class AuthorViewDto {
 
     private Integer id;
     private String name;
     private String nationality;
     private String nativeLanguage;
-    private Set<BookDto> books;
+    private Integer booksNumber;
+    private Integer nativeLanguageBooks;
+    private Integer foreignLanguageBooks;
 
 }

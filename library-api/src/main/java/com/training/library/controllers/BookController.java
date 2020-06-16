@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/book")
@@ -16,8 +18,8 @@ public class BookController {
     IBookService bookService;
 
     @GetMapping()
-    public ResponseEntity<String> getAll() {
-        return new ResponseEntity<>("Test", HttpStatus.OK);
+    public ResponseEntity<List<BookDto>> getAll() {
+        return new ResponseEntity<>(bookService.getAllBooks(), HttpStatus.OK);
     }
 
     @PostMapping

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BookServiceImp implements IBookService{
@@ -17,8 +18,9 @@ public class BookServiceImp implements IBookService{
 
     @Override
     public List<BookDto> getAllBooks() {
-        return null;
-    }
+        return bookRepository.findAll().stream()
+                .map(book -> BookMapper.INSTANCE.bookToBookDto(book))
+                .collect(Collectors.toList());    }
 
     @Override
     public BookDto createBook(BookDto newBook) {
