@@ -14,7 +14,7 @@ import javax.annotation.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2020-06-15T23:58:25-0500",
+    date = "2020-06-16T12:09:02-0500",
     comments = "version: 1.3.1.Final, compiler: javac, environment: Java 1.8.0_241 (Oracle Corporation)"
 )
 public class AuthorMapperImpl implements AuthorMapper {
@@ -53,7 +53,8 @@ public class AuthorMapperImpl implements AuthorMapper {
         return authorDto.build();
     }
 
-    protected Book bookDtoToBook(BookDto bookDto) {
+    @Override
+    public Book bookDtoToBook(BookDto bookDto) {
         if ( bookDto == null ) {
             return null;
         }
@@ -61,15 +62,35 @@ public class AuthorMapperImpl implements AuthorMapper {
         BookBuilder book = Book.builder();
 
         book.id( bookDto.getId() );
-        book.author( authorDtoToAuthor( bookDto.getAuthor() ) );
         book.title( bookDto.getTitle() );
         book.editorial( bookDto.getEditorial() );
         book.year( bookDto.getYear() );
         book.pages( bookDto.getPages() );
         book.language( bookDto.getLanguage() );
         book.format( bookDto.getFormat() );
+        book.isbn( bookDto.getIsbn() );
 
         return book.build();
+    }
+
+    @Override
+    public BookDto bookToBookDto(Book book) {
+        if ( book == null ) {
+            return null;
+        }
+
+        BookDtoBuilder bookDto = BookDto.builder();
+
+        bookDto.id( book.getId() );
+        bookDto.title( book.getTitle() );
+        bookDto.editorial( book.getEditorial() );
+        bookDto.year( book.getYear() );
+        bookDto.pages( book.getPages() );
+        bookDto.language( book.getLanguage() );
+        bookDto.format( book.getFormat() );
+        bookDto.isbn( book.getIsbn() );
+
+        return bookDto.build();
     }
 
     protected Set<Book> bookDtoSetToBookSet(Set<BookDto> set) {
@@ -83,25 +104,6 @@ public class AuthorMapperImpl implements AuthorMapper {
         }
 
         return set1;
-    }
-
-    protected BookDto bookToBookDto(Book book) {
-        if ( book == null ) {
-            return null;
-        }
-
-        BookDtoBuilder bookDto = BookDto.builder();
-
-        bookDto.id( book.getId() );
-        bookDto.author( authorToAuthorDto( book.getAuthor() ) );
-        bookDto.title( book.getTitle() );
-        bookDto.editorial( book.getEditorial() );
-        bookDto.year( book.getYear() );
-        bookDto.pages( book.getPages() );
-        bookDto.language( book.getLanguage() );
-        bookDto.format( book.getFormat() );
-
-        return bookDto.build();
     }
 
     protected Set<BookDto> bookSetToBookDtoSet(Set<Book> set) {

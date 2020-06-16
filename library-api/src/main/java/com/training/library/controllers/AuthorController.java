@@ -18,8 +18,12 @@ public class AuthorController {
     IAuthorService authorService;
 
     @GetMapping()
-    public ResponseEntity<List<AuthorViewDto>> getAll() {
-        return new ResponseEntity<>(authorService.getAllAuthors(), HttpStatus.OK);
+    public ResponseEntity<List<AuthorViewDto>> getAll(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String language
+
+    ) {
+        return new ResponseEntity<>(authorService.getAllAuthors(name, language), HttpStatus.OK);
     }
 
     @PostMapping

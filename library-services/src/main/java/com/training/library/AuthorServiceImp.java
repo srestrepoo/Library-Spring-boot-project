@@ -5,7 +5,9 @@ import com.training.library.dtos.AuthorViewDto;
 import com.training.library.entities.Author;
 import com.training.library.mappers.AuthorMapper;
 import com.training.library.repositories.AuthorRepository;
+import com.training.library.specifications.AuthorSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,8 +20,13 @@ public class AuthorServiceImp implements IAuthorService{
     AuthorRepository authorRepository;
 
     @Override
-    public List<AuthorViewDto> getAllAuthors() {
-        return authorRepository.findAll().stream()
+    public List<AuthorViewDto> getAllAuthors(String name, String language) {
+        Specification<Author> spec =
+                Specification.where((name == null)? null : new AuthorSpecification("name", name))
+                    .and((language == null)? null : new AuthorSpecification("language", language));
+
+
+        return authorRepository.findAll(spec).stream()
                 .map(author -> AuthorMapper.INSTANCE.authorToAuthorViewDto(author))
                 .collect(Collectors.toList());
     }

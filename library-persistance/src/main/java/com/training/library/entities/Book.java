@@ -40,6 +40,9 @@ public class Book {
     @Column(name = "format")
     private String format;
 
+    @Column(name = "isbn")
+    private String isbn;
+
     public Book(String title, String brand) {
         this.title = title;
         this.editorial = brand;

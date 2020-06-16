@@ -40,4 +40,10 @@ public interface AuthorMapper {
         return authorViewDto.build();
     };
 
+    @Mapping(ignore = true, target = "author")
+    Book bookDtoToBook(BookDto bookDto);
+
+    @Mapping(ignore = true, target = "author")
+    BookDto bookToBookDto(Book book);
+
 }

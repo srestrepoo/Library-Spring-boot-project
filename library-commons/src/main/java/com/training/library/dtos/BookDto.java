@@ -19,5 +19,6 @@ public class BookDto {
     private Integer pages;
     private String language;
     private String format;
+    private String isbn;
 
 }
