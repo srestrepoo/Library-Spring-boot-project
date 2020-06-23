@@ -20,10 +20,10 @@ public class AuthorController {
     @GetMapping()
     public ResponseEntity<List<AuthorViewDto>> getAll(
             @RequestParam(required = false) String name,
-            @RequestParam(required = false) String language
-
+            @RequestParam(required = false) String language,
+            @RequestParam(required = false) String nationality
     ) {
-        return new ResponseEntity<>(authorService.getAllAuthors(name, language), HttpStatus.OK);
+        return new ResponseEntity<>(authorService.getAllAuthors(name, language, nationality), HttpStatus.OK);
     }
 
     @PostMapping

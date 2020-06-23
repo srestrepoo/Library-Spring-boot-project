@@ -9,11 +9,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AuthorDto {
+public class BookViewDto {
 
     private Integer id;
-    private String name;
-    private String nationality;
-    private String nativeLanguage;
+    private String authorName;
+    private String title;
+    private String editorial;
+    private Integer year;
+    private Integer pages;
+    private String language;
+    private String format;
 
 }

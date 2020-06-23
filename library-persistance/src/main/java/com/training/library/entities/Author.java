@@ -12,7 +12,6 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @Entity
-@EqualsAndHashCode(exclude="books")
 @Table(name = "Author")
 public class Author {
 
@@ -28,8 +27,5 @@ public class Author {
 
     @Column(name = "native_language")
     private String nativeLanguage;
-
-    @OneToMany(mappedBy = "author")
-    Set<Book> books;
 
 }
