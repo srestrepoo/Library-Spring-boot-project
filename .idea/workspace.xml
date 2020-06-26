@@ -2,17 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f494564e-0180-486d-ac0f-d742d2f25d6f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/library-commons/src/main/java/com/training/library/dtos/BookViewDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/library-commons/src/main/java/com/training/library/dtos/FilterBookDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/library-persistance/src/main/java/com/training/library/specifications/BookSpecification.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/library-commons/src/main/java/com/training/library/enums/Language.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/library-commons/src/main/java/com/training/library/enums/Nationality.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library-api/src/main/java/com/training/library/controllers/AuthorController.java" beforeDir="false" afterPath="$PROJECT_DIR$/library-api/src/main/java/com/training/library/controllers/AuthorController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/library-api/src/main/java/com/training/library/controllers/BookController.java" beforeDir="false" afterPath="$PROJECT_DIR$/library-api/src/main/java/com/training/library/controllers/BookController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library-api/target/classes/com/training/library/controllers/AuthorController.class" beforeDir="false" afterPath="$PROJECT_DIR$/library-api/target/classes/com/training/library/controllers/AuthorController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/library-api/target/classes/com/training/library/controllers/BookController.class" beforeDir="false" afterPath="$PROJECT_DIR$/library-api/target/classes/com/training/library/controllers/BookController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/library-commons/src/main/java/com/training/library/dtos/AuthorDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/library-commons/src/main/java/com/training/library/dtos/AuthorDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library-commons/src/main/java/com/training/library/dtos/BookDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/library-commons/src/main/java/com/training/library/dtos/BookDto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/library-commons/target/classes/com/training/library/dtos/AuthorDto$AuthorDtoBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/library-commons/target/classes/com/training/library/dtos/AuthorDto$AuthorDtoBuilder.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/library-commons/target/classes/com/training/library/dtos/AuthorDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/library-commons/target/classes/com/training/library/dtos/AuthorDto.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library-commons/target/classes/com/training/library/dtos/BookDto$BookDtoBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/library-commons/target/classes/com/training/library/dtos/BookDto$BookDtoBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library-commons/target/classes/com/training/library/dtos/BookDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/library-commons/target/classes/com/training/library/dtos/BookDto.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/library-mapping/src/main/java/com/training/library/mappers/AuthorMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/library-mapping/src/main/java/com/training/library/mappers/AuthorMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/library-mapping/src/main/java/com/training/library/mappers/BookMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/library-mapping/src/main/java/com/training/library/mappers/BookMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/library-mapping/target/classes/com/training/library/mappers/AuthorMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/library-mapping/target/classes/com/training/library/mappers/AuthorMapper.class" afterDir="false" />
@@ -22,34 +22,25 @@
       <change beforePath="$PROJECT_DIR$/library-mapping/target/generated-sources/annotations/com/training/library/mappers/AuthorMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/library-mapping/target/generated-sources/annotations/com/training/library/mappers/AuthorMapperImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/library-mapping/target/generated-sources/annotations/com/training/library/mappers/BookMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/library-mapping/target/generated-sources/annotations/com/training/library/mappers/BookMapperImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/library-persistance/src/main/java/com/training/library/entities/Author.java" beforeDir="false" afterPath="$PROJECT_DIR$/library-persistance/src/main/java/com/training/library/entities/Author.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library-persistance/src/main/java/com/training/library/entities/Book.java" beforeDir="false" afterPath="$PROJECT_DIR$/library-persistance/src/main/java/com/training/library/entities/Book.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library-persistance/src/main/java/com/training/library/repositories/AuthorRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/library-persistance/src/main/java/com/training/library/repositories/AuthorRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library-persistance/src/main/java/com/training/library/repositories/BookRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/library-persistance/src/main/java/com/training/library/repositories/BookRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library-persistance/src/main/java/com/training/library/specifications/AuthorSpecification.java" beforeDir="false" afterPath="$PROJECT_DIR$/library-persistance/src/main/java/com/training/library/specifications/AuthorSpecification.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library-persistance/target/classes/com/training/library/entities/Author$AuthorBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/library-persistance/target/classes/com/training/library/entities/Author$AuthorBuilder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library-persistance/target/classes/com/training/library/entities/Author.class" beforeDir="false" afterPath="$PROJECT_DIR$/library-persistance/target/classes/com/training/library/entities/Author.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library-persistance/target/classes/com/training/library/entities/Book.class" beforeDir="false" afterPath="$PROJECT_DIR$/library-persistance/target/classes/com/training/library/entities/Book.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library-persistance/target/classes/com/training/library/repositories/AuthorRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/library-persistance/target/classes/com/training/library/repositories/AuthorRepository.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library-persistance/target/classes/com/training/library/repositories/BookRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/library-persistance/target/classes/com/training/library/repositories/BookRepository.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/library-services/src/main/java/com/training/library/AuthorServiceImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/library-services/src/main/java/com/training/library/AuthorServiceImp.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/library-services/src/main/java/com/training/library/BookServiceImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/library-services/src/main/java/com/training/library/BookServiceImp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library-services/src/main/java/com/training/library/IAuthorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/library-services/src/main/java/com/training/library/IAuthorService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library-services/src/main/java/com/training/library/IBookService.java" beforeDir="false" afterPath="$PROJECT_DIR$/library-services/src/main/java/com/training/library/IBookService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/library-services/target/classes/com/training/library/AuthorServiceImp.class" beforeDir="false" afterPath="$PROJECT_DIR$/library-services/target/classes/com/training/library/AuthorServiceImp.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/library-services/target/classes/com/training/library/BookServiceImp.class" beforeDir="false" afterPath="$PROJECT_DIR$/library-services/target/classes/com/training/library/BookServiceImp.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library-services/target/classes/com/training/library/IAuthorService.class" beforeDir="false" afterPath="$PROJECT_DIR$/library-services/target/classes/com/training/library/IAuthorService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library-services/target/classes/com/training/library/IBookService.class" beforeDir="false" afterPath="$PROJECT_DIR$/library-services/target/classes/com/training/library/IBookService.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FavoritesManager">
+    <favorites_list name="library" />
+  </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
         <option value="Class" />
+        <option value="Enum" />
       </list>
     </option>
   </component>
@@ -136,38 +127,38 @@
       <screen x="56" y="23" width="1624" height="1027" />
     </state>
     <state x="860" y="471" key="#xdebugger.evaluate/56.23.1624.1027@56.23.1624.1027" timestamp="1592282619716" />
-    <state width="1582" height="345" key="GridCell.Tab.0.bottom" timestamp="1592839215445">
+    <state width="1582" height="280" key="GridCell.Tab.0.bottom" timestamp="1593186338092">
       <screen x="56" y="23" width="1624" height="1027" />
     </state>
-    <state width="1582" height="345" key="GridCell.Tab.0.bottom/56.23.1624.1027@56.23.1624.1027" timestamp="1592839215445" />
-    <state width="1582" height="345" key="GridCell.Tab.0.center" timestamp="1592839215443">
+    <state width="1582" height="280" key="GridCell.Tab.0.bottom/56.23.1624.1027@56.23.1624.1027" timestamp="1593186338092" />
+    <state width="1582" height="280" key="GridCell.Tab.0.center" timestamp="1593186338090">
       <screen x="56" y="23" width="1624" height="1027" />
     </state>
-    <state width="1582" height="345" key="GridCell.Tab.0.center/56.23.1624.1027@56.23.1624.1027" timestamp="1592839215443" />
-    <state width="1582" height="345" key="GridCell.Tab.0.left" timestamp="1592839215442">
+    <state width="1582" height="280" key="GridCell.Tab.0.center/56.23.1624.1027@56.23.1624.1027" timestamp="1593186338090" />
+    <state width="1582" height="280" key="GridCell.Tab.0.left" timestamp="1593186338089">
       <screen x="56" y="23" width="1624" height="1027" />
     </state>
-    <state width="1582" height="345" key="GridCell.Tab.0.left/56.23.1624.1027@56.23.1624.1027" timestamp="1592839215442" />
-    <state width="1582" height="345" key="GridCell.Tab.0.right" timestamp="1592839215445">
+    <state width="1582" height="280" key="GridCell.Tab.0.left/56.23.1624.1027@56.23.1624.1027" timestamp="1593186338089" />
+    <state width="1582" height="280" key="GridCell.Tab.0.right" timestamp="1593186338091">
       <screen x="56" y="23" width="1624" height="1027" />
     </state>
-    <state width="1582" height="345" key="GridCell.Tab.0.right/56.23.1624.1027@56.23.1624.1027" timestamp="1592839215445" />
-    <state width="1582" height="345" key="GridCell.Tab.1.bottom" timestamp="1592839215203">
+    <state width="1582" height="280" key="GridCell.Tab.0.right/56.23.1624.1027@56.23.1624.1027" timestamp="1593186338091" />
+    <state width="1582" height="345" key="GridCell.Tab.1.bottom" timestamp="1593093957168">
       <screen x="56" y="23" width="1624" height="1027" />
     </state>
-    <state width="1582" height="345" key="GridCell.Tab.1.bottom/56.23.1624.1027@56.23.1624.1027" timestamp="1592839215203" />
-    <state width="1582" height="345" key="GridCell.Tab.1.center" timestamp="1592839215202">
+    <state width="1582" height="345" key="GridCell.Tab.1.bottom/56.23.1624.1027@56.23.1624.1027" timestamp="1593093957168" />
+    <state width="1582" height="345" key="GridCell.Tab.1.center" timestamp="1593093957167">
       <screen x="56" y="23" width="1624" height="1027" />
     </state>
-    <state width="1582" height="345" key="GridCell.Tab.1.center/56.23.1624.1027@56.23.1624.1027" timestamp="1592839215202" />
-    <state width="1582" height="345" key="GridCell.Tab.1.left" timestamp="1592839215201">
+    <state width="1582" height="345" key="GridCell.Tab.1.center/56.23.1624.1027@56.23.1624.1027" timestamp="1593093957167" />
+    <state width="1582" height="345" key="GridCell.Tab.1.left" timestamp="1593093957167">
       <screen x="56" y="23" width="1624" height="1027" />
     </state>
-    <state width="1582" height="345" key="GridCell.Tab.1.left/56.23.1624.1027@56.23.1624.1027" timestamp="1592839215201" />
-    <state width="1582" height="345" key="GridCell.Tab.1.right" timestamp="1592839215203">
+    <state width="1582" height="345" key="GridCell.Tab.1.left/56.23.1624.1027@56.23.1624.1027" timestamp="1593093957167" />
+    <state width="1582" height="345" key="GridCell.Tab.1.right" timestamp="1593093957168">
       <screen x="56" y="23" width="1624" height="1027" />
     </state>
-    <state width="1582" height="345" key="GridCell.Tab.1.right/56.23.1624.1027@56.23.1624.1027" timestamp="1592839215203" />
+    <state width="1582" height="345" key="GridCell.Tab.1.right/56.23.1624.1027@56.23.1624.1027" timestamp="1593093957168" />
     <state x="369" y="175" key="SettingsEditor" timestamp="1591990616765">
       <screen x="56" y="23" width="1624" height="1027" />
     </state>
@@ -176,10 +167,10 @@
       <screen x="56" y="23" width="1624" height="1027" />
     </state>
     <state x="327" y="279" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2/56.23.1624.1027@56.23.1624.1027" timestamp="1592261131740" />
-    <state x="526" y="293" width="683" height="486" key="find.popup" timestamp="1592918829309">
+    <state x="573" y="257" width="716" height="486" key="find.popup" timestamp="1593010674026">
       <screen x="56" y="23" width="1624" height="1027" />
     </state>
-    <state x="526" y="293" width="683" height="486" key="find.popup/56.23.1624.1027@56.23.1624.1027" timestamp="1592918829309" />
+    <state x="573" y="257" width="716" height="486" key="find.popup/56.23.1624.1027@56.23.1624.1027" timestamp="1593010674026" />
     <state x="245" y="159" key="new project wizard" timestamp="1591990059655">
       <screen x="56" y="23" width="1624" height="1027" />
     </state>
@@ -197,22 +188,34 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/library-api/src/main/java/com/training/library/controllers/AuthorController.java</url>
-          <line>35</line>
-          <option name="timeStamp" value="2" />
+          <url>file://$PROJECT_DIR$/library-services/src/main/java/com/training/library/AuthorServiceImp.java</url>
+          <line>47</line>
+          <option name="timeStamp" value="40" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/library-services/src/main/java/com/training/library/AuthorServiceImp.java</url>
+          <line>46</line>
+          <option name="timeStamp" value="42" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/library-api/src/main/java/com/training/library/controllers/BookController.java</url>
           <line>44</line>
-          <option name="timeStamp" value="8" />
+          <option name="timeStamp" value="43" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/library-api/src/main/java/com/training/library/controllers/BookController.java</url>
-          <line>43</line>
-          <properties class="com.training.library.controllers.BookController" method="createBook">
-            <option name="EMULATED" value="true" />
-          </properties>
-          <option name="timeStamp" value="9" />
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/library-services/src/main/java/com/training/library/BookServiceImp.java</url>
+          <line>63</line>
+          <option name="timeStamp" value="44" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/library-services/src/main/java/com/training/library/BookServiceImp.java</url>
+          <line>64</line>
+          <option name="timeStamp" value="45" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/library-services/src/main/java/com/training/library/BookServiceImp.java</url>
+          <line>65</line>
+          <option name="timeStamp" value="46" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

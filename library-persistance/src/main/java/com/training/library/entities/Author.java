@@ -1,10 +1,10 @@
 package com.training.library.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.training.library.enums.Language;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Getter
 @Setter

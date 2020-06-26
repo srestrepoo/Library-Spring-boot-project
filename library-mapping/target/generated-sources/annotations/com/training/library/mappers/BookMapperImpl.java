@@ -1,20 +1,18 @@
 package com.training.library.mappers;
 
-import com.training.library.dtos.AuthorDto;
-import com.training.library.dtos.AuthorDto.AuthorDtoBuilder;
 import com.training.library.dtos.BookDto;
 import com.training.library.dtos.BookDto.BookDtoBuilder;
 import com.training.library.dtos.BookViewDto;
 import com.training.library.dtos.BookViewDto.BookViewDtoBuilder;
 import com.training.library.entities.Author;
-import com.training.library.entities.Author.AuthorBuilder;
 import com.training.library.entities.Book;
 import com.training.library.entities.Book.BookBuilder;
+import com.training.library.enums.Language;
 import javax.annotation.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2020-06-22T10:01:45-0500",
+    date = "2020-06-26T10:40:03-0500",
     comments = "version: 1.3.1.Final, compiler: javac, environment: Java 1.8.0_241 (Oracle Corporation)"
 )
 public class BookMapperImpl implements BookMapper {
@@ -27,13 +25,14 @@ public class BookMapperImpl implements BookMapper {
 
         BookBuilder book = Book.builder();
 
-        book.author( authorDtoToAuthor( bookDto.getAuthor() ) );
+        if ( bookDto.getLanguage() != null ) {
+            book.language( bookDto.getLanguage().name() );
+        }
         book.id( bookDto.getId() );
         book.title( bookDto.getTitle() );
         book.editorial( bookDto.getEditorial() );
         book.year( bookDto.getYear() );
         book.pages( bookDto.getPages() );
-        book.language( bookDto.getLanguage() );
         book.format( bookDto.getFormat() );
         book.isbn( bookDto.getIsbn() );
 
@@ -48,49 +47,19 @@ public class BookMapperImpl implements BookMapper {
 
         BookDtoBuilder bookDto = BookDto.builder();
 
-        bookDto.author( authorToAuthorDto( book.getAuthor() ) );
+        bookDto.authorId( bookAuthorId( book ) );
         bookDto.id( book.getId() );
         bookDto.title( book.getTitle() );
         bookDto.editorial( book.getEditorial() );
         bookDto.year( book.getYear() );
         bookDto.pages( book.getPages() );
-        bookDto.language( book.getLanguage() );
+        if ( book.getLanguage() != null ) {
+            bookDto.language( Enum.valueOf( Language.class, book.getLanguage() ) );
+        }
         bookDto.format( book.getFormat() );
         bookDto.isbn( book.getIsbn() );
 
         return bookDto.build();
-    }
-
-    @Override
-    public Author authorDtoToAuthor(AuthorDto authorDto) {
-        if ( authorDto == null ) {
-            return null;
-        }
-
-        AuthorBuilder author = Author.builder();
-
-        author.id( authorDto.getId() );
-        author.name( authorDto.getName() );
-        author.nationality( authorDto.getNationality() );
-        author.nativeLanguage( authorDto.getNativeLanguage() );
-
-        return author.build();
-    }
-
-    @Override
-    public AuthorDto authorToAuthorDto(Author author) {
-        if ( author == null ) {
-            return null;
-        }
-
-        AuthorDtoBuilder authorDto = AuthorDto.builder();
-
-        authorDto.id( author.getId() );
-        authorDto.name( author.getName() );
-        authorDto.nationality( author.getNationality() );
-        authorDto.nativeLanguage( author.getNativeLanguage() );
-
-        return authorDto.build();
     }
 
     @Override
@@ -102,15 +71,30 @@ public class BookMapperImpl implements BookMapper {
         BookViewDtoBuilder bookViewDto = BookViewDto.builder();
 
         bookViewDto.authorName( bookAuthorName( book ) );
+        bookViewDto.language( book.getLanguage() );
         bookViewDto.id( book.getId() );
         bookViewDto.title( book.getTitle() );
         bookViewDto.editorial( book.getEditorial() );
         bookViewDto.year( book.getYear() );
         bookViewDto.pages( book.getPages() );
-        bookViewDto.language( book.getLanguage() );
         bookViewDto.format( book.getFormat() );
 
         return bookViewDto.build();
+    }
+
+    private Integer bookAuthorId(Book book) {
+        if ( book == null ) {
+            return null;
+        }
+        Author author = book.getAuthor();
+        if ( author == null ) {
+            return null;
+        }
+        Integer id = author.getId();
+        if ( id == null ) {
+            return null;
+        }
+        return id;
     }
 
     private String bookAuthorName(Book book) {

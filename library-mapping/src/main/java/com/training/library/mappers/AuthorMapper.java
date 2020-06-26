@@ -14,10 +14,14 @@ public interface AuthorMapper {
 
     AuthorMapper INSTANCE = Mappers.getMapper( AuthorMapper.class );
 
+    @Mapping(source = "nativeLanguage", target = "nativeLanguage")
+    @Mapping(source = "nationality", target = "nationality")
     Author authorDtoToAuthor(AuthorDto authorDto);
 
     AuthorDto authorToAuthorDto(Author author);
 
+    @Mapping(source = "nativeLanguage", target = "nativeLanguage")
+    @Mapping(source = "nationality", target = "nationality")
     AuthorViewDto authorToAuthorViewDto(Author author);
 
 }

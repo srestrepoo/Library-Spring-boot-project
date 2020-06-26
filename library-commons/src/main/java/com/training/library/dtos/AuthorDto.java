@@ -1,9 +1,8 @@
 package com.training.library.dtos;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.training.library.enums.Language;
+import com.training.library.enums.Nationality;
+import lombok.*;
 
 @Data
 @NoArgsConstructor
@@ -12,8 +11,11 @@ import lombok.NoArgsConstructor;
 public class AuthorDto {
 
     private Integer id;
+    @NonNull
     private String name;
-    private String nationality;
-    private String nativeLanguage;
+    @NonNull
+    private Nationality nationality;
+    @NonNull
+    private Language nativeLanguage;
 
 }
