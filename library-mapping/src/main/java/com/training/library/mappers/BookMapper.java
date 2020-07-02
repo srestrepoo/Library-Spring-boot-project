@@ -14,14 +14,12 @@ public interface BookMapper {
 
     BookMapper INSTANCE = Mappers.getMapper( BookMapper.class );
 
-    @Mapping(source = "language", target = "language")
     Book bookDtoToBook(BookDto bookDto);
 
     @Mapping(source = "author.id", target = "authorId")
     BookDto bookToBookDto(Book book);
 
     @Mapping(source = "author.name", target = "authorName")
-    @Mapping(source = "language", target = "language")
     BookViewDto bookToBookViewDto(Book book);
 
 }

@@ -1,5 +1,6 @@
 package com.training.library.dtos;
 
+import com.training.library.enums.Language;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,7 +18,7 @@ public class BookViewDto {
     private String editorial;
     private Integer year;
     private Integer pages;
-    private String language;
+    private Language language;
     private String format;
 
 }

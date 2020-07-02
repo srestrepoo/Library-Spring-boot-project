@@ -1,7 +1,7 @@
 package com.training.library.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.training.library.enums.Language;
+import com.training.library.enums.Nationality;
 import lombok.*;
 
 import javax.persistence.*;
@@ -23,9 +23,11 @@ public class Author {
     private String name;
 
     @Column(name = "nationality")
-    private String nationality;
+    @Enumerated(EnumType.STRING)
+    private Nationality nationality;
 
     @Column(name = "native_language")
-    private String nativeLanguage;
+    @Enumerated(EnumType.STRING)
+    private Language nativeLanguage;
 
 }

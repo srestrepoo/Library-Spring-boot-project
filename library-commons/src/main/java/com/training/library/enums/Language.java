@@ -6,5 +6,6 @@ public enum Language {
     NORWEGIAN,
     FRENCH,
     PORTUGUESE,
-    CZECH
+    CZECH,
+    RUSSIAN
 }

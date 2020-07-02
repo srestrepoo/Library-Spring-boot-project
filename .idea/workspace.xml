@@ -2,30 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f494564e-0180-486d-ac0f-d742d2f25d6f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/library-commons/src/main/java/com/training/library/enums/Language.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/library-commons/src/main/java/com/training/library/enums/Nationality.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library-api/src/main/java/com/training/library/controllers/BookController.java" beforeDir="false" afterPath="$PROJECT_DIR$/library-api/src/main/java/com/training/library/controllers/BookController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library-api/target/classes/com/training/library/controllers/BookController.class" beforeDir="false" afterPath="$PROJECT_DIR$/library-api/target/classes/com/training/library/controllers/BookController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library-commons/src/main/java/com/training/library/dtos/AuthorDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/library-commons/src/main/java/com/training/library/dtos/AuthorDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library-commons/src/main/java/com/training/library/dtos/BookDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/library-commons/src/main/java/com/training/library/dtos/BookDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library-commons/target/classes/com/training/library/dtos/AuthorDto$AuthorDtoBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/library-commons/target/classes/com/training/library/dtos/AuthorDto$AuthorDtoBuilder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library-commons/target/classes/com/training/library/dtos/AuthorDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/library-commons/target/classes/com/training/library/dtos/AuthorDto.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library-commons/target/classes/com/training/library/dtos/BookDto$BookDtoBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/library-commons/target/classes/com/training/library/dtos/BookDto$BookDtoBuilder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library-commons/target/classes/com/training/library/dtos/BookDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/library-commons/target/classes/com/training/library/dtos/BookDto.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library-mapping/src/main/java/com/training/library/mappers/AuthorMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/library-mapping/src/main/java/com/training/library/mappers/AuthorMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library-mapping/src/main/java/com/training/library/mappers/BookMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/library-mapping/src/main/java/com/training/library/mappers/BookMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library-mapping/target/classes/com/training/library/mappers/AuthorMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/library-mapping/target/classes/com/training/library/mappers/AuthorMapper.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library-mapping/target/classes/com/training/library/mappers/AuthorMapperImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/library-mapping/target/classes/com/training/library/mappers/AuthorMapperImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library-mapping/target/classes/com/training/library/mappers/BookMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/library-mapping/target/classes/com/training/library/mappers/BookMapper.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library-mapping/target/classes/com/training/library/mappers/BookMapperImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/library-mapping/target/classes/com/training/library/mappers/BookMapperImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library-api/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/library-api/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library-commons/src/main/java/com/training/library/dtos/AuthorViewDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/library-commons/src/main/java/com/training/library/dtos/AuthorViewDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library-commons/src/main/java/com/training/library/dtos/BookViewDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/library-commons/src/main/java/com/training/library/dtos/BookViewDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library-commons/src/main/java/com/training/library/enums/Language.java" beforeDir="false" afterPath="$PROJECT_DIR$/library-commons/src/main/java/com/training/library/enums/Language.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library-commons/src/main/java/com/training/library/enums/Nationality.java" beforeDir="false" afterPath="$PROJECT_DIR$/library-commons/src/main/java/com/training/library/enums/Nationality.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/library-mapping/target/generated-sources/annotations/com/training/library/mappers/AuthorMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/library-mapping/target/generated-sources/annotations/com/training/library/mappers/AuthorMapperImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/library-mapping/target/generated-sources/annotations/com/training/library/mappers/BookMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/library-mapping/target/generated-sources/annotations/com/training/library/mappers/BookMapperImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library-persistance/src/main/java/com/training/library/entities/Author.java" beforeDir="false" afterPath="$PROJECT_DIR$/library-persistance/src/main/java/com/training/library/entities/Author.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library-services/src/main/java/com/training/library/AuthorServiceImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/library-services/src/main/java/com/training/library/AuthorServiceImp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library-services/src/main/java/com/training/library/BookServiceImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/library-services/src/main/java/com/training/library/BookServiceImp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library-services/target/classes/com/training/library/AuthorServiceImp.class" beforeDir="false" afterPath="$PROJECT_DIR$/library-services/target/classes/com/training/library/AuthorServiceImp.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library-services/target/classes/com/training/library/BookServiceImp.class" beforeDir="false" afterPath="$PROJECT_DIR$/library-services/target/classes/com/training/library/BookServiceImp.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library-persistance/target/classes/META-INF/library-persistance.kotlin_module" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,6 +50,7 @@
     <property name="LombokPluginIS_MISSING_LOMBOK_CHECK_Enabled" value="true" />
     <property name="LombokPluginIS_VAL_Enabled" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
@@ -179,10 +165,10 @@
       <screen x="56" y="23" width="1624" height="1027" />
     </state>
     <state x="533" y="248" width="670" height="675" key="run.anything.popup/56.23.1624.1027@56.23.1624.1027" timestamp="1591827806219" />
-    <state x="533" y="250" width="670" height="676" key="search.everywhere.popup" timestamp="1591997689357">
+    <state x="533" y="250" width="670" height="676" key="search.everywhere.popup" timestamp="1593719873522">
       <screen x="56" y="23" width="1624" height="1027" />
     </state>
-    <state x="533" y="250" width="670" height="676" key="search.everywhere.popup/56.23.1624.1027@56.23.1624.1027" timestamp="1591997689357" />
+    <state x="533" y="250" width="670" height="676" key="search.everywhere.popup/56.23.1624.1027@56.23.1624.1027" timestamp="1593719873522" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

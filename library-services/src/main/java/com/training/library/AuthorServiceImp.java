@@ -54,8 +54,8 @@ public class AuthorServiceImp implements IAuthorService {
         try {
             Author author = authorRepository.findById(authorUpdated.getId()).orElseThrow(NoSuchElementException::new);
             author.setName(authorUpdated.getName());
-            author.setNationality(authorUpdated.getNationality().toString());
-            author.setNativeLanguage(authorUpdated.getNativeLanguage().toString());
+            author.setNationality(authorUpdated.getNationality());
+            author.setNativeLanguage(authorUpdated.getNativeLanguage());
             Author updatedAuthor = authorRepository.save(author);
             return AuthorMapper.INSTANCE.authorToAuthorDto(updatedAuthor);
         } catch (NoSuchElementException exception) {

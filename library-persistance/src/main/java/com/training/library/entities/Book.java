@@ -1,6 +1,7 @@
 package com.training.library.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.training.library.enums.Language;
 import lombok.*;
 
 import javax.persistence.*;
@@ -35,7 +36,8 @@ public class Book {
     private Integer pages;
 
     @Column(name = "language")
-    private String language;
+    @Enumerated(EnumType.STRING)
+    private Language language;
 
     @Column(name = "format")
     private String format;
