@@ -2,19 +2,17 @@ package com.training.library.mappers;
 
 import com.training.library.dtos.AuthorDto;
 import com.training.library.dtos.AuthorDto.AuthorDtoBuilder;
-import com.training.library.dtos.BookDto;
-import com.training.library.dtos.BookDto.BookDtoBuilder;
+import com.training.library.dtos.AuthorViewDto;
+import com.training.library.dtos.AuthorViewDto.AuthorViewDtoBuilder;
 import com.training.library.entities.Author;
 import com.training.library.entities.Author.AuthorBuilder;
-import com.training.library.entities.Book;
-import com.training.library.entities.Book.BookBuilder;
-import java.util.HashSet;
-import java.util.Set;
+import com.training.library.enums.Language;
+import com.training.library.enums.Nationality;
 import javax.annotation.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2020-06-16T12:09:02-0500",
+    date = "2020-06-26T10:35:49-0500",
     comments = "version: 1.3.1.Final, compiler: javac, environment: Java 1.8.0_241 (Oracle Corporation)"
 )
 public class AuthorMapperImpl implements AuthorMapper {
@@ -27,11 +25,14 @@ public class AuthorMapperImpl implements AuthorMapper {
 
         AuthorBuilder author = Author.builder();
 
+        if ( authorDto.getNationality() != null ) {
+            author.nationality( authorDto.getNationality().name() );
+        }
+        if ( authorDto.getNativeLanguage() != null ) {
+            author.nativeLanguage( authorDto.getNativeLanguage().name() );
+        }
         author.id( authorDto.getId() );
         author.name( authorDto.getName() );
-        author.nationality( authorDto.getNationality() );
-        author.nativeLanguage( authorDto.getNativeLanguage() );
-        author.books( bookDtoSetToBookSet( authorDto.getBooks() ) );
 
         return author.build();
     }
@@ -46,76 +47,29 @@ public class AuthorMapperImpl implements AuthorMapper {
 
         authorDto.id( author.getId() );
         authorDto.name( author.getName() );
-        authorDto.nationality( author.getNationality() );
-        authorDto.nativeLanguage( author.getNativeLanguage() );
-        authorDto.books( bookSetToBookDtoSet( author.getBooks() ) );
+        if ( author.getNationality() != null ) {
+            authorDto.nationality( Enum.valueOf( Nationality.class, author.getNationality() ) );
+        }
+        if ( author.getNativeLanguage() != null ) {
+            authorDto.nativeLanguage( Enum.valueOf( Language.class, author.getNativeLanguage() ) );
+        }
 
         return authorDto.build();
     }
 
     @Override
-    public Book bookDtoToBook(BookDto bookDto) {
-        if ( bookDto == null ) {
+    public AuthorViewDto authorToAuthorViewDto(Author author) {
+        if ( author == null ) {
             return null;
         }
 
-        BookBuilder book = Book.builder();
+        AuthorViewDtoBuilder authorViewDto = AuthorViewDto.builder();
 
-        book.id( bookDto.getId() );
-        book.title( bookDto.getTitle() );
-        book.editorial( bookDto.getEditorial() );
-        book.year( bookDto.getYear() );
-        book.pages( bookDto.getPages() );
-        book.language( bookDto.getLanguage() );
-        book.format( bookDto.getFormat() );
-        book.isbn( bookDto.getIsbn() );
+        authorViewDto.nationality( author.getNationality() );
+        authorViewDto.nativeLanguage( author.getNativeLanguage() );
+        authorViewDto.id( author.getId() );
+        authorViewDto.name( author.getName() );
 
-        return book.build();
-    }
-
-    @Override
-    public BookDto bookToBookDto(Book book) {
-        if ( book == null ) {
-            return null;
-        }
-
-        BookDtoBuilder bookDto = BookDto.builder();
-
-        bookDto.id( book.getId() );
-        bookDto.title( book.getTitle() );
-        bookDto.editorial( book.getEditorial() );
-        bookDto.year( book.getYear() );
-        bookDto.pages( book.getPages() );
-        bookDto.language( book.getLanguage() );
-        bookDto.format( book.getFormat() );
-        bookDto.isbn( book.getIsbn() );
-
-        return bookDto.build();
-    }
-
-    protected Set<Book> bookDtoSetToBookSet(Set<BookDto> set) {
-        if ( set == null ) {
-            return null;
-        }
-
-        Set<Book> set1 = new HashSet<Book>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
-        for ( BookDto bookDto : set ) {
-            set1.add( bookDtoToBook( bookDto ) );
-        }
-
-        return set1;
-    }
-
-    protected Set<BookDto> bookSetToBookDtoSet(Set<Book> set) {
-        if ( set == null ) {
-            return null;
-        }
-
-        Set<BookDto> set1 = new HashSet<BookDto>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
-        for ( Book book : set ) {
-            set1.add( bookToBookDto( book ) );
-        }
-
-        return set1;
+        return authorViewDto.build();
     }
 }

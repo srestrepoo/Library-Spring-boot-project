@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface IAuthorService {
 
-    List<AuthorViewDto> getAllAuthors(String name, String language);
+    List<AuthorViewDto> getAllAuthors(String name, String language, String nationality);
 
     AuthorDto createAuthor(AuthorDto newAuthorDto);
 

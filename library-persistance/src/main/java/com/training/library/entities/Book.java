@@ -43,9 +43,4 @@ public class Book {
     @Column(name = "isbn")
     private String isbn;
 
-    public Book(String title, String brand) {
-        this.title = title;
-        this.editorial = brand;
-    }
-
 }

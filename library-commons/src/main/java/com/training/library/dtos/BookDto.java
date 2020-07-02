@@ -1,9 +1,7 @@
 package com.training.library.dtos;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.training.library.enums.Language;
+import lombok.*;
 
 @Data
 @NoArgsConstructor
@@ -12,13 +10,21 @@ import lombok.NoArgsConstructor;
 public class BookDto {
 
     private Integer id;
-    private AuthorDto author;
+    @NonNull
+    private Integer authorId;
+    @NonNull
     private String title;
+    @NonNull
     private String editorial;
+    @NonNull
     private Integer year;
+    @NonNull
     private Integer pages;
-    private String language;
+    @NonNull
+    private Language language;
+    @NonNull
     private String format;
+    @NonNull
     private String isbn;
 
 }

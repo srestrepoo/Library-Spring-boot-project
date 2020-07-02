@@ -1,10 +1,10 @@
 package com.training.library.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.training.library.enums.Language;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -12,7 +12,6 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @Entity
-@EqualsAndHashCode(exclude="books")
 @Table(name = "Author")
 public class Author {
 
@@ -28,8 +27,5 @@ public class Author {
 
     @Column(name = "native_language")
     private String nativeLanguage;
-
-    @OneToMany(mappedBy = "author")
-    Set<Book> books;
 
 }
