@@ -1,6 +1,5 @@
 package com.training.library.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.training.library.enums.Language;
 import lombok.*;
 

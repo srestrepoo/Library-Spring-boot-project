@@ -4,19 +4,24 @@ import com.training.library.dtos.AuthorDto;
 import com.training.library.dtos.AuthorViewDto;
 import com.training.library.dtos.BookDto;
 import com.training.library.entities.Author;
+import com.training.library.enums.Language;
+import com.training.library.enums.Nationality;
+import com.training.library.exceptions.EntityNotFound;
 import com.training.library.mappers.AuthorMapper;
 import com.training.library.repositories.AuthorRepository;
-import com.training.library.specifications.AuthorSpecification;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,17 +33,37 @@ public class AuthorServiceImp implements IAuthorService {
     @Autowired
     private IBookService bookService;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @Override
     @Transactional
-    public List<AuthorViewDto> getAllAuthors(String name, String nativeLanguage, String nationality) {
-        Specification<Author> spec =
-                Specification.where((name == null) ? null : AuthorSpecification.containsName(name))
-                        .and((StringUtils.isEmpty(nativeLanguage)) ? null : AuthorSpecification.containsProperty("nativeLanguage", nativeLanguage))
-                        .and((StringUtils.isEmpty(nationality)) ? null : AuthorSpecification.containsProperty("nationality", nationality));
+    public List<AuthorViewDto> getAllAuthors(String name, Language nativeLanguage, Nationality nationality) {
 
-        return authorRepository.findAll(spec).stream()
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Author> query = builder.createQuery(Author.class);
+        Root<Author> author = query.from(Author.class);
+        query.select(author);
+
+        List<Predicate> filters = new ArrayList<>();
+        if (!StringUtils.isEmpty(name)) {
+            filters.add(builder.like(author.get("name"), "%" + name + "%"));
+        }
+
+        if (nativeLanguage != null) {
+            filters.add(builder.equal(author.get("nativeLanguage"), nativeLanguage));
+        }
+
+        if (nationality != null) {
+            filters.add(builder.equal(author.get("nationality"), nationality));
+        }
+
+        query.where(filters.toArray(new Predicate[]{}));
+
+        return entityManager.createQuery(query).getResultList().stream()
                 .map(this::getBooksNumberByAuthor)
                 .collect(Collectors.toList());
+
     }
 
     @Override
@@ -50,35 +75,20 @@ public class AuthorServiceImp implements IAuthorService {
 
     @Override
     @Transactional
-    public AuthorDto updateAuthor(AuthorDto authorUpdated) {
-        try {
-            Author author = authorRepository.findById(authorUpdated.getId()).orElseThrow(NoSuchElementException::new);
-            author.setName(authorUpdated.getName());
-            author.setNationality(authorUpdated.getNationality());
-            author.setNativeLanguage(authorUpdated.getNativeLanguage());
-            Author updatedAuthor = authorRepository.save(author);
-            return AuthorMapper.INSTANCE.authorToAuthorDto(updatedAuthor);
-        } catch (NoSuchElementException exception) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND);
-        } catch (Exception exception) {
-            throw new ResponseStatusException(
-                    HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage());
-        }
+    public AuthorDto updateAuthor(Integer AuthorId, AuthorDto authorDto) {
+        Author authorToUpdate = authorRepository.findById(AuthorId).orElseThrow(EntityNotFound::new);
+        AuthorMapper.INSTANCE.updateAuthorFromDto(authorDto, authorToUpdate);
+        Author updatedAuthor = authorRepository.save(authorToUpdate);
+        return AuthorMapper.INSTANCE.authorToAuthorDto(updatedAuthor);
     }
 
     @Override
     @Transactional
     public void deleteAuthor(Integer id) {
-        try {
-            authorRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        if (authorRepository.findById(id).isPresent()) {
             authorRepository.customDelete(id);
-        } catch (NoSuchElementException exception) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND);
-        } catch (Exception exception) {
-            throw new ResponseStatusException(
-                    HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage());
+        } else {
+            throw new EntityNotFound();
         }
     }
 
