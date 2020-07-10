@@ -1,0 +1,5 @@
+ALTER TABLE BOOK ADD COLUMN price INT after state;
+ALTER TABLE BOOK ADD COLUMN currency VARCHAR(3) after price;
+
+UPDATE BOOK SET price = 20;
+UPDATE BOOK SET currency = "USD";

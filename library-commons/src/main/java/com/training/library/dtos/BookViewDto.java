@@ -1,6 +1,8 @@
 package com.training.library.dtos;
 
+import com.training.library.enums.Currency;
 import com.training.library.enums.Language;
+import com.training.library.enums.State;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,5 +22,8 @@ public class BookViewDto {
     private Integer pages;
     private Language language;
     private String format;
+    private State state;
+    private Integer price;
+    private Currency currency;
 
 }

@@ -51,7 +51,10 @@ public class BookServiceImp implements IBookService {
                 book.get("year"),
                 book.get("pages"),
                 book.get("language"),
-                book.get("format")
+                book.get("format"),
+                book.get("state"),
+                book.get("price"),
+                book.get("currency")
         );
         query.where(addBookFilters(book, bookJoinAuthor, builder, filterBookDto));
         List<BookViewDto> resultList = entityManager.createQuery(query).getResultList();
@@ -121,6 +124,10 @@ public class BookServiceImp implements IBookService {
 
         if (!StringUtils.isEmpty(filterBookDto.getAuthorName())) {
             filters.add(builder.like(join.get("name"), "%" + filterBookDto.getAuthorName() + "%"));
+        }
+
+        if (filterBookDto.getState() != null) {
+            filters.add(builder.equal(root.get("state"), filterBookDto.getState()));
         }
 
         return filters.toArray(new Predicate[]{});

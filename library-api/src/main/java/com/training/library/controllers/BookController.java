@@ -5,6 +5,7 @@ import com.training.library.dtos.BookDto;
 import com.training.library.dtos.BookViewDto;
 import com.training.library.dtos.FilterBookDto;
 import com.training.library.enums.Language;
+import com.training.library.enums.State;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,9 @@ public class BookController {
             @RequestParam(required = false) Language language,
             @RequestParam(required = false) Integer year,
             @RequestParam(required = false) String editorial,
-            @RequestParam(required = false) String format
+            @RequestParam(required = false) String format,
+            @RequestParam(required = false) State state
+
     ) {
 
         FilterBookDto filterBookDto = FilterBookDto.builder()
@@ -36,7 +39,8 @@ public class BookController {
                 .language(language)
                 .year(year)
                 .editorial(editorial)
-                .format(format).build();
+                .format(format)
+                .state(state).build();
 
         return new ResponseEntity<>(bookService.getAllBooks(filterBookDto), HttpStatus.OK);
     }
