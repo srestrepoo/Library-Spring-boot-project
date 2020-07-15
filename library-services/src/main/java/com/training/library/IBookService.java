@@ -14,7 +14,7 @@ public interface IBookService {
 
     BookDto createBook(BookDto newBook);
 
-    BookDto updateBook(BookDto book);
+    BookDto updateBook(Integer bookId, BookDto bookDto);
 
     void deleteBook(Integer id);
 

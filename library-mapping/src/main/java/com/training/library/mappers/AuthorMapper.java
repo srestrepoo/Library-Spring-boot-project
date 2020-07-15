@@ -2,11 +2,10 @@ package com.training.library.mappers;
 
 import com.training.library.dtos.AuthorDto;
 import com.training.library.dtos.AuthorViewDto;
-import com.training.library.dtos.BookDto;
 import com.training.library.entities.Author;
-import com.training.library.entities.Book;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
 @Mapper
@@ -14,14 +13,13 @@ public interface AuthorMapper {
 
     AuthorMapper INSTANCE = Mappers.getMapper( AuthorMapper.class );
 
-    @Mapping(source = "nativeLanguage", target = "nativeLanguage")
-    @Mapping(source = "nationality", target = "nationality")
     Author authorDtoToAuthor(AuthorDto authorDto);
 
     AuthorDto authorToAuthorDto(Author author);
 
-    @Mapping(source = "nativeLanguage", target = "nativeLanguage")
-    @Mapping(source = "nationality", target = "nationality")
     AuthorViewDto authorToAuthorViewDto(Author author);
+
+    @Mapping(target = "id", ignore = true)
+    void updateAuthorFromDto(AuthorDto authorDto, @MappingTarget Author author);
 
 }

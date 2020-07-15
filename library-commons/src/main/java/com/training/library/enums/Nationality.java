@@ -9,5 +9,7 @@ public enum Nationality {
     SCOTLAND,
     IRELAND,
     CZECH_REPUBLIC,
-    PORTUGAL
+    PORTUGAL,
+    ARGENTINA,
+    RUSSIA
 }

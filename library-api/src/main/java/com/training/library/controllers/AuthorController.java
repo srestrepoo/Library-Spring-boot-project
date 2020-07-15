@@ -3,6 +3,8 @@ package com.training.library.controllers;
 import com.training.library.IAuthorService;
 import com.training.library.dtos.AuthorDto;
 import com.training.library.dtos.AuthorViewDto;
+import com.training.library.enums.Language;
+import com.training.library.enums.Nationality;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +22,8 @@ public class AuthorController {
     @GetMapping()
     public ResponseEntity<List<AuthorViewDto>> getAll(
             @RequestParam(required = false) String name,
-            @RequestParam(required = false) String language,
-            @RequestParam(required = false) String nationality
+            @RequestParam(required = false) Language language,
+            @RequestParam(required = false) Nationality nationality
     ) {
         return new ResponseEntity<>(authorService.getAllAuthors(name, language, nationality), HttpStatus.OK);
     }
@@ -31,9 +33,9 @@ public class AuthorController {
         return new ResponseEntity<>(authorService.createAuthor(authorDto), HttpStatus.CREATED);
     }
 
-    @PutMapping
-    public ResponseEntity<AuthorDto> updateAuthor(@RequestBody AuthorDto authorDto) {
-        return new ResponseEntity<>(authorService.updateAuthor(authorDto), HttpStatus.OK);
+    @PutMapping("/{id}")
+    public ResponseEntity<AuthorDto> updateAuthor(@PathVariable Integer id, @RequestBody AuthorDto authorDto) {
+        return new ResponseEntity<>(authorService.updateAuthor(id, authorDto), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
