@@ -14,7 +14,7 @@ import javax.persistence.*;
 public class MathDetails {
 
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "subcategory")
@@ -27,7 +27,7 @@ public class MathDetails {
     private String answer;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "book_id")
     @MapsId
     private Book book;
 

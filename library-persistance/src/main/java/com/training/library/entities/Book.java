@@ -57,10 +57,10 @@ public class Book {
     @Enumerated(EnumType.STRING)
     private Currency currency;
 
-    @OneToOne(mappedBy = "book", fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "book", fetch = FetchType.LAZY)
     private MathDetails mathDetails;
 
-    @OneToOne(mappedBy = "book", fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "book", fetch = FetchType.LAZY)
     private HistoryDetails historyDetails;
 
 }

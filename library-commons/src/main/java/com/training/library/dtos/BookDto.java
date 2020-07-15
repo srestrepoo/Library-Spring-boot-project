@@ -35,4 +35,6 @@ public class BookDto {
     @NonNull
     private Currency currency;
 
+    private Details details;
+
 }

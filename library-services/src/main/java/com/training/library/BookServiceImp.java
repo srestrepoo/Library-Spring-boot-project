@@ -8,8 +8,11 @@ import com.training.library.entities.MathDetails;
 import com.training.library.enums.*;
 import com.training.library.exceptions.EntityNotFound;
 import com.training.library.mappers.BookMapper;
+import com.training.library.mappers.DetailsMapper;
 import com.training.library.repositories.AuthorRepository;
 import com.training.library.repositories.BookRepository;
+import com.training.library.repositories.HistoryDetailsRepository;
+import com.training.library.repositories.MathDetailsRepository;
 import com.training.library.specifications.BookSpecification;
 import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -36,6 +39,15 @@ public class BookServiceImp implements IBookService {
 
     @Autowired
     private BookMapper bookMapper;
+
+    @Autowired
+    private DetailsMapper detailsMapper;
+
+    @Autowired
+    private MathDetailsRepository mathDetailsRepository;
+
+    @Autowired
+    private HistoryDetailsRepository historyDetailsRepository;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -97,10 +109,10 @@ public class BookServiceImp implements IBookService {
         query.where(addBookFilters(book, bookJoinAuthor, builder, filterBookDto));
         List<BookViewDto> resultList = entityManager.createQuery(query).getResultStream()
                 .map(detailBookViewDto -> {
-                    if(bookCategory == BookCategory.MATH){
-                        return bookMapper.detailBookToMathBookViewDto(detailBookViewDto);
+                    if (bookCategory == BookCategory.MATH) {
+                        return bookMapper.detailBookViewToMathBookViewDto(detailBookViewDto);
                     } else {
-                        return bookMapper.detailBookToHistoryBookViewDto(detailBookViewDto);
+                        return bookMapper.detailBookViewToHistoryBookViewDto(detailBookViewDto);
                     }
                 })
                 .collect(Collectors.toList());
@@ -120,9 +132,21 @@ public class BookServiceImp implements IBookService {
     @Transactional
     public BookDto createBook(BookDto newBook) {
         Author author = authorRepository.findById(newBook.getAuthorId()).orElseThrow(EntityNotFound::new);
-        Book createdBook = bookMapper.bookDtoToBook(newBook, author);
-        bookRepository.save(createdBook);
-        return bookMapper.bookToBookDto(createdBook);
+        Book createdBook = bookRepository.save(bookMapper.bookDtoToBook(newBook, author));
+        Details createdDetailsDto = null;
+
+        if (newBook.getDetails().getClass() == HistoryDetailsDto.class) {
+            HistoryDetails historyDetails = detailsMapper.dtoToHistoryDetails((HistoryDetailsDto) newBook.getDetails(), createdBook);
+            HistoryDetails createdDetails = historyDetailsRepository.save(historyDetails);
+            createdDetailsDto = detailsMapper.historyDetailsToDto(createdDetails);
+        }
+        else if (newBook.getDetails().getClass() == MathDetailsDto.class) {
+            MathDetails mathDetails = detailsMapper.dtoToMathDetails((MathDetailsDto) newBook.getDetails(), createdBook);
+            MathDetails createdDetails = mathDetailsRepository.save(mathDetails);
+            createdDetailsDto = detailsMapper.mathDetailsToDto(createdDetails);
+        }
+
+        return bookMapper.bookToCreatedBookDto(createdBook, createdDetailsDto);
     }
 
     @Override

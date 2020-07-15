@@ -15,7 +15,7 @@ import javax.persistence.*;
 public class HistoryDetails {
 
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "historical_period")
@@ -29,7 +29,7 @@ public class HistoryDetails {
     private String censure;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "book_id")
     @MapsId
     private Book book;
 
