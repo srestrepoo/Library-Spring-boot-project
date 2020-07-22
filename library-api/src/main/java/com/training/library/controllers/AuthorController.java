@@ -17,7 +17,7 @@ import java.util.List;
 public class AuthorController {
 
     @Autowired
-    IAuthorService authorService;
+    private IAuthorService authorService;
 
     @GetMapping()
     public ResponseEntity<List<AuthorViewDto>> getAll(
@@ -39,9 +39,9 @@ public class AuthorController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity createAuthor(@PathVariable Integer id) {
+    public ResponseEntity deleteAuthor(@PathVariable Integer id) {
         authorService.deleteAuthor(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

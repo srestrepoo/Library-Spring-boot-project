@@ -7,8 +7,9 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class HistoryDetailsDto implements Details{
+public class HistoryDetailsDto implements DetailsDto {
 
+    private Integer id;
     @NonNull
     private String historicalPeriod;
     @NonNull

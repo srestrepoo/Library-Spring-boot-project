@@ -3,10 +3,9 @@ package com.training.library.mappers;
 import com.training.library.dtos.BookDto;
 import com.training.library.dtos.BookViewDto;
 import com.training.library.dtos.DetailBookViewDto;
-import com.training.library.dtos.Details;
+import com.training.library.dtos.DetailsDto;
 import com.training.library.entities.Author;
 import com.training.library.entities.Book;
-import com.training.library.entities.HistoryDetails;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -22,21 +21,14 @@ public interface BookMapper {
     BookDto bookToBookDto(Book book);
 
     @Mapping(source = "book.author.id", target = "authorId")
-    @Mapping(source = "newDetails", target = "details")
-    BookDto bookToCreatedBookDto(Book book, Details newDetails);
+    @Mapping(source = "newDetailsDto", target = "detailsDto")
+    BookDto bookToCreatedBookDto(Book book, DetailsDto newDetailsDto);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "author", source = "newAuthor")
-    void updateBookFromDto(BookDto bookDto, @MappingTarget Book book, Author newAuthor);
+    void updateBookFromDto(@MappingTarget Book book, BookDto bookDto, Author newAuthor);
 
-    @Mapping(source = "subcategory", target = "details.subcategory")
-    @Mapping(source = "exercise", target = "details.exercise")
-    @Mapping(source = "answer", target = "details.answer")
-    BookViewDto detailBookViewToMathBookViewDto(DetailBookViewDto mathBook);
-
-    @Mapping(source = "historicalPeriod", target = "details.historicalPeriod")
-    @Mapping(source = "censure", target = "details.censure")
-    @Mapping(source = "country", target = "details.country")
-    BookViewDto detailBookViewToHistoryBookViewDto(DetailBookViewDto mathBook);
+    @Mapping(source = "detailsDto", target = "details")
+    BookViewDto detailBookViewToBookViewDto(DetailBookViewDto detailBookViewDto, DetailsDto detailsDto);
 
 }

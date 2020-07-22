@@ -6,7 +6,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MathDetailsDto implements DetailsDto {
+public class PhysicsDetailsDto implements DetailsDto {
 
     private Integer id;
     @NonNull

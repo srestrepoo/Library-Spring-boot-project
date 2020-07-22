@@ -34,7 +34,7 @@ public class BookDto {
     private Integer price;
     @NonNull
     private Currency currency;
-
-    private Details details;
+    @NonNull
+    private DetailsDto detailsDto;
 
 }

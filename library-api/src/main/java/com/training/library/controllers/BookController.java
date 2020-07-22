@@ -19,7 +19,7 @@ import java.util.List;
 public class BookController {
 
     @Autowired
-    IBookService bookService;
+    private IBookService bookService;
 
     @GetMapping()
     public ResponseEntity<List<BookViewDto>> getAll(
@@ -56,9 +56,9 @@ public class BookController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity createAuthor(@PathVariable Integer id) {
+    public ResponseEntity deleteAuthor(@PathVariable Integer id) {
         bookService.deleteBook(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 

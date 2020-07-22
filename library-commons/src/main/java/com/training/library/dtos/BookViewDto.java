@@ -36,5 +36,5 @@ public class BookViewDto {
     @NonNull
     private Currency currency;
 
-    private DetailsViewDto details;
+    private DetailsDto details;
 }

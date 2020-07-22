@@ -57,10 +57,4 @@ public class Book {
     @Enumerated(EnumType.STRING)
     private Currency currency;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "book", fetch = FetchType.LAZY)
-    private MathDetails mathDetails;
-
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "book", fetch = FetchType.LAZY)
-    private HistoryDetails historyDetails;
-
 }
