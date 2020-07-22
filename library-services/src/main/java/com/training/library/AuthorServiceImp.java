@@ -33,6 +33,9 @@ public class AuthorServiceImp implements IAuthorService {
     @Autowired
     private IBookService bookService;
 
+    @Autowired
+    private AuthorMapper authorMapper;
+
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -69,17 +72,17 @@ public class AuthorServiceImp implements IAuthorService {
     @Override
     @Transactional
     public AuthorDto createAuthor(AuthorDto newAuthorDto) {
-        Author newAuthor = authorRepository.save(AuthorMapper.INSTANCE.authorDtoToAuthor(newAuthorDto));
-        return AuthorMapper.INSTANCE.authorToAuthorDto(newAuthor);
+        Author newAuthor = authorRepository.save(authorMapper.authorDtoToAuthor(newAuthorDto));
+        return authorMapper.authorToAuthorDto(newAuthor);
     }
 
     @Override
     @Transactional
     public AuthorDto updateAuthor(Integer AuthorId, AuthorDto authorDto) {
         Author authorToUpdate = authorRepository.findById(AuthorId).orElseThrow(EntityNotFound::new);
-        AuthorMapper.INSTANCE.updateAuthorFromDto(authorDto, authorToUpdate);
+        authorMapper.updateAuthorFromDto(authorDto, authorToUpdate);
         Author updatedAuthor = authorRepository.save(authorToUpdate);
-        return AuthorMapper.INSTANCE.authorToAuthorDto(updatedAuthor);
+        return authorMapper.authorToAuthorDto(updatedAuthor);
     }
 
     @Override
@@ -93,7 +96,7 @@ public class AuthorServiceImp implements IAuthorService {
     }
 
     private AuthorViewDto getBooksNumberByAuthor(Author author) {
-        AuthorViewDto authorViewDto = AuthorMapper.INSTANCE.authorToAuthorViewDto(author);
+        AuthorViewDto authorViewDto = authorMapper.authorToAuthorViewDto(author);
         List<BookDto> books = bookService.getBooksByAuthorId(author.getId());
         Long nativeLanguageBooks = books.stream()
                 .filter(book -> book.getLanguage().equals(authorViewDto.getNativeLanguage()))

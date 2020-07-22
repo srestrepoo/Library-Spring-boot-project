@@ -2,6 +2,7 @@ package com.training.library.dtos;
 
 
 import com.training.library.enums.Language;
+import com.training.library.enums.State;
 import lombok.Builder;
 import lombok.Data;
 
@@ -15,5 +16,6 @@ public class FilterBookDto {
     private Integer year;
     private String editorial;
     private String format;
+    private State state;
 
 }

@@ -2,39 +2,35 @@ package com.training.library.dtos;
 
 import com.training.library.enums.Currency;
 import com.training.library.enums.Language;
+import com.training.library.enums.Nationality;
 import com.training.library.enums.State;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class BookDto {
+@SuperBuilder
+public class DetailBookViewDto {
 
     private Integer id;
-    @NonNull
-    private Integer authorId;
-    @NonNull
+    private String authorName;
     private String title;
-    @NonNull
     private String editorial;
-    @NonNull
     private Integer year;
-    @NonNull
     private Integer pages;
-    @NonNull
     private Language language;
-    @NonNull
     private String format;
-    @NonNull
-    private String isbn;
-    @NonNull
     private State state;
-    @NonNull
     private Integer price;
-    @NonNull
     private Currency currency;
-
-    private Details details;
+    private String subcategory;
+    private String exercise;
+    private String answer;
+    private String historicalPeriod;
+    private String censure;
+    private Nationality country;
 
 }
