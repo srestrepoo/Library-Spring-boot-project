@@ -1,9 +1,9 @@
 package com.training.library.dtos;
 
-import com.training.library.enums.Currency;
-import com.training.library.enums.Language;
-import com.training.library.enums.Nationality;
-import com.training.library.enums.State;
+import com.training.library.enums.CurrencyEnum;
+import com.training.library.enums.LanguageEnum;
+import com.training.library.enums.NationalityEnum;
+import com.training.library.enums.StateEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,16 +21,16 @@ public class DetailBookViewDto {
     private String editorial;
     private Integer year;
     private Integer pages;
-    private Language language;
+    private LanguageEnum language;
     private String format;
-    private State state;
+    private StateEnum state;
     private Integer price;
-    private Currency currency;
+    private CurrencyEnum currency;
     private String subcategory;
     private String exercise;
     private String answer;
     private String historicalPeriod;
     private String censure;
-    private Nationality country;
+    private NationalityEnum country;
 
 }

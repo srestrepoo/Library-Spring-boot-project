@@ -1,6 +1,6 @@
 package com.training.library.enums;
 
-public enum BookCategory {
+public enum BookCategoryEnum {
     HISTORY,
     MATH,
     PHYSICS

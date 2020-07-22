@@ -4,8 +4,9 @@ import com.training.library.IBookService;
 import com.training.library.dtos.BookDto;
 import com.training.library.dtos.BookViewDto;
 import com.training.library.dtos.FilterBookDto;
-import com.training.library.enums.Language;
-import com.training.library.enums.State;
+import com.training.library.enums.BookCategoryEnum;
+import com.training.library.enums.LanguageEnum;
+import com.training.library.enums.StateEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,11 +26,11 @@ public class BookController {
     public ResponseEntity<List<BookViewDto>> getAll(
             @RequestParam(required = false) String bookName,
             @RequestParam(required = false) String authorName,
-            @RequestParam(required = false) Language language,
+            @RequestParam(required = false) LanguageEnum language,
             @RequestParam(required = false) Integer year,
             @RequestParam(required = false) String editorial,
             @RequestParam(required = false) String format,
-            @RequestParam(required = false) State state
+            @RequestParam(required = false) StateEnum state
 
     ) {
 
@@ -56,8 +57,8 @@ public class BookController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteAuthor(@PathVariable Integer id) {
-        bookService.deleteBook(id);
+    public ResponseEntity deleteAuthor(@PathVariable Integer id, @RequestParam BookCategoryEnum bookCategory) {
+        bookService.deleteBook(id, bookCategory);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

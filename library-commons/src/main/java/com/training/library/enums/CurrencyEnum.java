@@ -1,6 +1,6 @@
 package com.training.library.enums;
 
-public enum Currency {
+public enum CurrencyEnum {
     USD,
     COP,
     EUR,

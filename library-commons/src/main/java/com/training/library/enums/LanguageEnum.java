@@ -1,6 +1,6 @@
 package com.training.library.enums;
 
-public enum Language {
+public enum LanguageEnum {
     ENGLISH,
     SPANISH,
     NORWEGIAN,

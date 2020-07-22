@@ -3,6 +3,7 @@ package com.training.library;
 import com.training.library.dtos.BookDto;
 import com.training.library.dtos.BookViewDto;
 import com.training.library.dtos.FilterBookDto;
+import com.training.library.enums.BookCategoryEnum;
 
 import java.util.List;
 
@@ -16,6 +17,6 @@ public interface IBookService {
 
     BookDto updateBook(Integer bookId, BookDto bookDto);
 
-    void deleteBook(Integer id);
+    void deleteBook(Integer id, BookCategoryEnum bookCategory);
 
 }

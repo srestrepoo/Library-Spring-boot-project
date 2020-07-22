@@ -1,8 +1,8 @@
 package com.training.library.dtos;
 
 
-import com.training.library.enums.Language;
-import com.training.library.enums.State;
+import com.training.library.enums.LanguageEnum;
+import com.training.library.enums.StateEnum;
 import lombok.Builder;
 import lombok.Data;
 
@@ -12,10 +12,10 @@ public class FilterBookDto {
 
     private String bookName;
     private String authorName;
-    private Language language;
+    private LanguageEnum language;
     private Integer year;
     private String editorial;
     private String format;
-    private State state;
+    private StateEnum state;
 
 }

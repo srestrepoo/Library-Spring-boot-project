@@ -1,7 +1,7 @@
 package com.training.library.dtos;
 
-import com.training.library.enums.Language;
-import com.training.library.enums.Nationality;
+import com.training.library.enums.LanguageEnum;
+import com.training.library.enums.NationalityEnum;
 import lombok.*;
 
 @Data
@@ -14,8 +14,8 @@ public class AuthorDto {
     @NonNull
     private String name;
     @NonNull
-    private Nationality nationality;
+    private NationalityEnum nationality;
     @NonNull
-    private Language nativeLanguage;
+    private LanguageEnum nativeLanguage;
 
 }

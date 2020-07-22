@@ -1,7 +1,7 @@
 package com.training.library.dtos;
 
-import com.training.library.enums.Language;
-import com.training.library.enums.Nationality;
+import com.training.library.enums.LanguageEnum;
+import com.training.library.enums.NationalityEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,8 +15,8 @@ public class AuthorViewDto {
 
     private Integer id;
     private String name;
-    private Nationality nationality;
-    private Language nativeLanguage;
+    private NationalityEnum nationality;
+    private LanguageEnum nativeLanguage;
     private Integer booksNumber;
     private Integer nativeLanguageBooks;
     private Integer foreignLanguageBooks;

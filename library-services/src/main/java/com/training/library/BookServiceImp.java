@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.*;
@@ -108,7 +109,7 @@ public class BookServiceImp implements IBookService {
                         book.get(Book_.editorial), book.get(Book_.year), book.get(Book_.pages), book.get(Book_.language),
                         book.get(Book_.format), book.get(Book_.state), book.get(Book_.price), book.get(Book_.currency),
                         mathDetails.get(MathDetails_.subcategory), mathDetails.get(MathDetails_.exercise), mathDetails.get(MathDetails_.answer),
-                        builder.nullLiteral(String.class), builder.nullLiteral(String.class), builder.nullLiteral(Nationality.class))
+                        builder.nullLiteral(String.class), builder.nullLiteral(String.class), builder.nullLiteral(NationalityEnum.class))
         );
 
         query.where(addBookFilters(book, author, builder, filterBookDto));
@@ -138,7 +139,7 @@ public class BookServiceImp implements IBookService {
                         book.get(Book_.format), book.get(Book_.state), book.get(Book_.price), book.get(Book_.currency),
                         physicsDetails.get(PhysicsDetails_.subcategory), physicsDetails.get(PhysicsDetails_.exercise),
                         physicsDetails.get(PhysicsDetails_.answer),
-                        builder.nullLiteral(String.class), builder.nullLiteral(String.class), builder.nullLiteral(Nationality.class))
+                        builder.nullLiteral(String.class), builder.nullLiteral(String.class), builder.nullLiteral(NationalityEnum.class))
         );
 
         query.where(addBookFilters(book, author, builder, filterBookDto));
@@ -224,11 +225,17 @@ public class BookServiceImp implements IBookService {
 
     @Override
     @Transactional
-    public void deleteBook(Integer id) {
+    public void deleteBook(Integer id, BookCategoryEnum bookCategory) {
         if (bookRepository.findById(id).isPresent()) {
-            physicsDetailsRepository.deleteById(id);
-            historyDetailsRepository.deleteById(id);
-            mathDetailsRepository.deleteById(id);
+            if (bookCategory.compareTo(BookCategoryEnum.PHYSICS) == 0) {
+                physicsDetailsRepository.deleteById(id);
+            } else if (bookCategory.compareTo(BookCategoryEnum.HISTORY) == 0) {
+                historyDetailsRepository.deleteById(id);
+            } else if (bookCategory.compareTo(BookCategoryEnum.MATH) == 0) {
+                mathDetailsRepository.deleteById(id);
+            } else {
+                throw new CategoryConflictException();
+            }
         } else {
             throw new EntityNotFound();
         }

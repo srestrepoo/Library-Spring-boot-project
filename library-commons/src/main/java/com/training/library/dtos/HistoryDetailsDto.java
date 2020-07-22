@@ -1,6 +1,6 @@
 package com.training.library.dtos;
 
-import com.training.library.enums.Nationality;
+import com.training.library.enums.NationalityEnum;
 import lombok.*;
 
 @Data
@@ -13,7 +13,7 @@ public class HistoryDetailsDto implements DetailsDto {
     @NonNull
     private String historicalPeriod;
     @NonNull
-    private Nationality country;
+    private NationalityEnum country;
     @NonNull
     private String censure;
 

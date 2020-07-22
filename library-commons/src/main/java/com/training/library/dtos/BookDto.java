@@ -1,8 +1,8 @@
 package com.training.library.dtos;
 
-import com.training.library.enums.Currency;
-import com.training.library.enums.Language;
-import com.training.library.enums.State;
+import com.training.library.enums.CurrencyEnum;
+import com.training.library.enums.LanguageEnum;
+import com.training.library.enums.StateEnum;
 import lombok.*;
 
 @Data
@@ -23,17 +23,17 @@ public class BookDto {
     @NonNull
     private Integer pages;
     @NonNull
-    private Language language;
+    private LanguageEnum language;
     @NonNull
     private String format;
     @NonNull
     private String isbn;
     @NonNull
-    private State state;
+    private StateEnum state;
     @NonNull
     private Integer price;
     @NonNull
-    private Currency currency;
+    private CurrencyEnum currency;
     @NonNull
     private DetailsDto detailsDto;
 

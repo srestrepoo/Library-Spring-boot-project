@@ -1,6 +1,6 @@
 package com.training.library.enums;
 
-public enum Nationality {
+public enum NationalityEnum {
     COLOMBIA,
     UNITED_STATES,
     FRANCE,

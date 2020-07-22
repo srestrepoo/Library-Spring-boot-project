@@ -1,6 +1,6 @@
 package com.training.library.enums;
 
-public enum State {
+public enum StateEnum {
     EXCELLENT,
     GOOD,
     ACCEPTABLE,

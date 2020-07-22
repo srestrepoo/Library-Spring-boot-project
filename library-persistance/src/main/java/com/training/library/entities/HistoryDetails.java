@@ -1,6 +1,6 @@
 package com.training.library.entities;
 
-import com.training.library.enums.Nationality;
+import com.training.library.enums.NationalityEnum;
 import lombok.*;
 
 import javax.persistence.*;
@@ -23,7 +23,7 @@ public class HistoryDetails {
 
     @Column(name = "country")
     @Enumerated(EnumType.STRING)
-    private Nationality country;
+    private NationalityEnum country;
 
     @Column(name = "censure")
     private String censure;

@@ -4,8 +4,8 @@ import com.training.library.dtos.AuthorDto;
 import com.training.library.dtos.AuthorViewDto;
 import com.training.library.dtos.BookDto;
 import com.training.library.entities.Author;
-import com.training.library.enums.Language;
-import com.training.library.enums.Nationality;
+import com.training.library.enums.LanguageEnum;
+import com.training.library.enums.NationalityEnum;
 import com.training.library.exceptions.EntityNotFound;
 import com.training.library.mappers.AuthorMapper;
 import com.training.library.repositories.AuthorRepository;
@@ -41,7 +41,7 @@ public class AuthorServiceImp implements IAuthorService {
 
     @Override
     @Transactional
-    public List<AuthorViewDto> getAllAuthors(String name, Language nativeLanguage, Nationality nationality) {
+    public List<AuthorViewDto> getAllAuthors(String name, LanguageEnum nativeLanguage, NationalityEnum nationality) {
 
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Author> query = builder.createQuery(Author.class);
