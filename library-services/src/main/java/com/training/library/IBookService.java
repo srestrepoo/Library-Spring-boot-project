@@ -1,15 +1,16 @@
 package com.training.library;
 
-import com.training.library.dtos.BookDto;
-import com.training.library.dtos.BookViewDto;
-import com.training.library.dtos.FilterBookDto;
-import com.training.library.enums.BookCategoryEnum;
+import com.training.library.dtos.Book.BookDto;
+import com.training.library.dtos.Book.BookViewDto;
+import com.training.library.dtos.Book.FilterBookDto;
 
 import java.util.List;
 
 public interface IBookService {
 
-    List<BookViewDto> getAllBooks(FilterBookDto filterBookDto);
+    List<BookViewDto> getAllBooksView(FilterBookDto filterBookDto);
+
+    List<BookDto> getAllBooks(FilterBookDto filterBookDto);
 
     List<BookDto> getBooksByAuthorId(Integer id);
 
@@ -17,6 +18,6 @@ public interface IBookService {
 
     BookDto updateBook(Integer bookId, BookDto bookDto);
 
-    void deleteBook(Integer id, BookCategoryEnum bookCategory);
+    void deleteBook(Integer id);
 
 }

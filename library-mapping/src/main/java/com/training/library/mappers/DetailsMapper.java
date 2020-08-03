@@ -1,6 +1,9 @@
 package com.training.library.mappers;
 
-import com.training.library.dtos.*;
+import com.training.library.dtos.Book.DetailBookViewDto;
+import com.training.library.dtos.Details.HistoryDetailsDto;
+import com.training.library.dtos.Details.MathDetailsDto;
+import com.training.library.dtos.Details.PhysicsDetailsDto;
 import com.training.library.entities.Book;
 import com.training.library.entities.HistoryDetails;
 import com.training.library.entities.MathDetails;
@@ -47,7 +50,5 @@ public interface DetailsMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "book", source = "book")
     void updatePhysicsDetails(@MappingTarget PhysicsDetails physicsDetails, PhysicsDetailsDto physicsDetailsDto, Book book);
-
-
 
 }

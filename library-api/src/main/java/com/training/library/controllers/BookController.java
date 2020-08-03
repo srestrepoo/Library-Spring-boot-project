@@ -1,10 +1,10 @@
 package com.training.library.controllers;
 
 import com.training.library.IBookService;
-import com.training.library.dtos.BookDto;
-import com.training.library.dtos.BookViewDto;
-import com.training.library.dtos.FilterBookDto;
-import com.training.library.enums.BookCategoryEnum;
+import com.training.library.OrderGateway;
+import com.training.library.dtos.Book.BookDto;
+import com.training.library.dtos.Book.BookViewDto;
+import com.training.library.dtos.Book.FilterBookDto;
 import com.training.library.enums.LanguageEnum;
 import com.training.library.enums.StateEnum;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +21,35 @@ public class BookController {
 
     @Autowired
     private IBookService bookService;
+
+    @Autowired
+    private OrderGateway orderGateway;
+
+    @GetMapping("/integration")
+    public ResponseEntity<List<BookDto>> integration(
+            @RequestParam(required = false) String bookName,
+            @RequestParam(required = false) String authorName,
+            @RequestParam(required = false) LanguageEnum language,
+            @RequestParam(required = false) Integer year,
+            @RequestParam(required = false) String editorial,
+            @RequestParam(required = false) String format,
+            @RequestParam(required = false) StateEnum state
+
+    ) {
+
+        FilterBookDto filterBookDto = FilterBookDto.builder()
+                .bookName(bookName)
+                .authorName(authorName)
+                .language(language)
+                .year(year)
+                .editorial(editorial)
+                .format(format)
+                .state(state).build();
+
+        List<BookDto> bookDtoList = orderGateway.createOrder(filterBookDto);
+
+        return new ResponseEntity<>(bookDtoList, HttpStatus.OK);
+    }
 
     @GetMapping()
     public ResponseEntity<List<BookViewDto>> getAll(
@@ -43,7 +72,7 @@ public class BookController {
                 .format(format)
                 .state(state).build();
 
-        return new ResponseEntity<>(bookService.getAllBooks(filterBookDto), HttpStatus.OK);
+        return new ResponseEntity<>(bookService.getAllBooksView(filterBookDto), HttpStatus.OK);
     }
 
     @PostMapping
@@ -57,8 +86,8 @@ public class BookController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteAuthor(@PathVariable Integer id, @RequestParam BookCategoryEnum bookCategory) {
-        bookService.deleteBook(id, bookCategory);
+    public ResponseEntity deleteAuthor(@PathVariable Integer id) {
+        bookService.deleteBook(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

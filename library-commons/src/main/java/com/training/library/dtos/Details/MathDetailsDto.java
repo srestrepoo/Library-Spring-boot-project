@@ -1,4 +1,4 @@
-package com.training.library.dtos;
+package com.training.library.dtos.Details;
 
 import lombok.*;
 

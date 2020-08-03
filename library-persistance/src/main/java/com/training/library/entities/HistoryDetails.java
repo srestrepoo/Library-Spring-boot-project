@@ -28,7 +28,7 @@ public class HistoryDetails {
     @Column(name = "censure")
     private String censure;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval=true)
     @JoinColumn(name = "book_id")
     @MapsId
     private Book book;

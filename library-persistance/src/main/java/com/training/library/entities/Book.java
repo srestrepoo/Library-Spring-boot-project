@@ -4,6 +4,7 @@ import com.training.library.enums.CurrencyEnum;
 import com.training.library.enums.LanguageEnum;
 import com.training.library.enums.StateEnum;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
@@ -56,5 +57,8 @@ public class Book {
     @Column(name = "currency")
     @Enumerated(EnumType.STRING)
     private CurrencyEnum currency;
+
+    @Column(name = "active", columnDefinition = "TINYINT(1)")
+    private Boolean active;
 
 }

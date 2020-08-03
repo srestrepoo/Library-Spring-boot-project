@@ -1,4 +1,4 @@
-package com.training.library.dtos;
+package com.training.library.dtos.Author;
 
 import com.training.library.enums.LanguageEnum;
 import com.training.library.enums.NationalityEnum;

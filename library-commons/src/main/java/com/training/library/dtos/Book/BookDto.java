@@ -1,5 +1,6 @@
-package com.training.library.dtos;
+package com.training.library.dtos.Book;
 
+import com.training.library.dtos.Details.DetailsDto;
 import com.training.library.enums.CurrencyEnum;
 import com.training.library.enums.LanguageEnum;
 import com.training.library.enums.StateEnum;
@@ -8,7 +9,7 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Builder(toBuilder=true)
 public class BookDto {
 
     private Integer id;
@@ -34,6 +35,8 @@ public class BookDto {
     private Integer price;
     @NonNull
     private CurrencyEnum currency;
+    @Builder.Default
+    private Boolean active = true;
     @NonNull
     private DetailsDto detailsDto;
 

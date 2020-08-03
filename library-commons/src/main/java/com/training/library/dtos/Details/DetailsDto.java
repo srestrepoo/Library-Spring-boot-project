@@ -1,9 +1,8 @@
-package com.training.library.dtos;
+package com.training.library.dtos.Details;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.*;
-import com.training.library.enums.BookCategoryEnum;
 
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,

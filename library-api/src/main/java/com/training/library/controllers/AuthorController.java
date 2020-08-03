@@ -1,8 +1,8 @@
 package com.training.library.controllers;
 
 import com.training.library.IAuthorService;
-import com.training.library.dtos.AuthorDto;
-import com.training.library.dtos.AuthorViewDto;
+import com.training.library.dtos.Author.AuthorDto;
+import com.training.library.dtos.Author.AuthorViewDto;
 import com.training.library.enums.LanguageEnum;
 import com.training.library.enums.NationalityEnum;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class AuthorController {
             @RequestParam(required = false) LanguageEnum language,
             @RequestParam(required = false) NationalityEnum nationality
     ) {
-        return new ResponseEntity<>(authorService.getAllAuthors(name, language, nationality), HttpStatus.OK);
+        return new ResponseEntity<>(authorService.getAllAuthorsView(name, language, nationality), HttpStatus.OK);
     }
 
     @PostMapping

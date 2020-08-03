@@ -1,6 +1,13 @@
 package com.training.library;
 
-import com.training.library.dtos.*;
+import com.training.library.dtos.Book.BookDto;
+import com.training.library.dtos.Book.BookViewDto;
+import com.training.library.dtos.Book.DetailBookViewDto;
+import com.training.library.dtos.Book.FilterBookDto;
+import com.training.library.dtos.Details.DetailsDto;
+import com.training.library.dtos.Details.HistoryDetailsDto;
+import com.training.library.dtos.Details.MathDetailsDto;
+import com.training.library.dtos.Details.PhysicsDetailsDto;
 import com.training.library.entities.*;
 import com.training.library.enums.*;
 import com.training.library.exceptions.CategoryConflictException;
@@ -52,12 +59,63 @@ public class BookServiceImp implements IBookService {
 
     @Override
     @Transactional
-    public List<BookViewDto> getAllBooks(FilterBookDto filterBookDto) {
+    public List<BookViewDto> getAllBooksView(FilterBookDto filterBookDto) {
+
+        List<BookViewDto> mathBookList = getMathBooks(filterBookDto).stream()
+                .map(resultBook -> {
+                            DetailsDto detailsViewDto = detailsMapper.detailBookToMathDetailsDto(resultBook);
+                            return bookMapper.detailBookViewToBookViewDto(resultBook, detailsViewDto); })
+                .collect(Collectors.toList());
+
+        List<BookViewDto> historyBookList = getHistoryBooks(filterBookDto).stream()
+                .map(resultBook -> {
+                    DetailsDto detailsViewDto = detailsMapper.detailBookToHistoryDetailsDto(resultBook);
+                    return bookMapper.detailBookViewToBookViewDto(resultBook, detailsViewDto); })
+                .collect(Collectors.toList());
+
+        List<BookViewDto> physicsBookList = getPhysicsBooks(filterBookDto).stream()
+                .map(resultBook -> {
+                    DetailsDto detailsViewDto = detailsMapper.detailBookToPhysicsDetailsDto(resultBook);
+                    return bookMapper.detailBookViewToBookViewDto(resultBook, detailsViewDto); })
+                .collect(Collectors.toList());
 
         List<List<BookViewDto>> categoriesList = Arrays.asList(
-                getMathBooks(filterBookDto),
-                getHistoryBooks(filterBookDto),
-                getPhysicsBooks(filterBookDto)
+                mathBookList,
+                historyBookList,
+                physicsBookList
+        );
+
+        return categoriesList.stream()
+                .flatMap(bookList -> bookList.stream())
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public List<BookDto> getAllBooks(FilterBookDto filterBookDto) {
+
+        List<BookDto> mathBookList = getMathBooks(filterBookDto).stream()
+                .map(resultBook -> {
+                    DetailsDto detailsViewDto = detailsMapper.detailBookToMathDetailsDto(resultBook);
+                    return bookMapper.detailBookViewToBookDto(resultBook, detailsViewDto); })
+                .collect(Collectors.toList());
+
+        List<BookDto> historyBookList = getHistoryBooks(filterBookDto).stream()
+                .map(resultBook -> {
+                    DetailsDto detailsViewDto = detailsMapper.detailBookToHistoryDetailsDto(resultBook);
+                    return bookMapper.detailBookViewToBookDto(resultBook, detailsViewDto); })
+                .collect(Collectors.toList());
+
+        List<BookDto> physicsBookList = getPhysicsBooks(filterBookDto).stream()
+                .map(resultBook -> {
+                    DetailsDto detailsViewDto = detailsMapper.detailBookToPhysicsDetailsDto(resultBook);
+                    return bookMapper.detailBookViewToBookDto(resultBook, detailsViewDto); })
+                .collect(Collectors.toList());
+
+        List<List<BookDto>> categoriesList = Arrays.asList(
+                mathBookList,
+                historyBookList,
+                physicsBookList
         );
 
         return categoriesList.stream()
@@ -66,7 +124,7 @@ public class BookServiceImp implements IBookService {
     }
 
     @Transactional
-    public List<BookViewDto> getHistoryBooks(FilterBookDto filterBookDto) {
+    public List<DetailBookViewDto> getHistoryBooks(FilterBookDto filterBookDto) {
 
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<DetailBookViewDto> query = builder.createQuery(DetailBookViewDto.class);
@@ -76,26 +134,21 @@ public class BookServiceImp implements IBookService {
         Join<Book, Author> author = book.join(Book_.author, JoinType.LEFT);
 
         query.select(
-                builder.construct(DetailBookViewDto.class, book.get(Book_.id), author.get(Author_.name), book.get(Book_.title),
-                        book.get(Book_.editorial), book.get(Book_.year), book.get(Book_.pages), book.get(Book_.language),
-                        book.get(Book_.format), book.get(Book_.state), book.get(Book_.price), book.get(Book_.currency),
+                builder.construct(DetailBookViewDto.class,
+                        book.get(Book_.id), author.get(Author_.id), author.get(Author_.name), book.get(Book_.title), book.get(Book_.editorial),
+                        book.get(Book_.year), book.get(Book_.pages), book.get(Book_.language), book.get(Book_.format),
+                        book.get(Book_.isbn), book.get(Book_.state), book.get(Book_.price), book.get(Book_.currency),
                         builder.nullLiteral(String.class), builder.nullLiteral(String.class), builder.nullLiteral(String.class),
                         historyDetails.get(HistoryDetails_.historicalPeriod), historyDetails.get(HistoryDetails_.censure),
                         historyDetails.get(HistoryDetails_.country))
         );
 
         query.where(addBookFilters(book, author, builder, filterBookDto));
-        List<BookViewDto> resultList = entityManager.createQuery(query).getResultStream()
-                .map(resultBook -> {
-                    DetailsDto detailsViewDto = detailsMapper.detailBookToHistoryDetailsDto(resultBook);
-                    return bookMapper.detailBookViewToBookViewDto(resultBook, detailsViewDto);
-                })
-                .collect(Collectors.toList());
-        return resultList;
+        return entityManager.createQuery(query).getResultList();
     }
 
     @Transactional
-    public List<BookViewDto> getMathBooks(FilterBookDto filterBookDto) {
+    public List<DetailBookViewDto> getMathBooks(FilterBookDto filterBookDto) {
 
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<DetailBookViewDto> query = builder.createQuery(DetailBookViewDto.class);
@@ -105,26 +158,20 @@ public class BookServiceImp implements IBookService {
         Join<Book, Author> author = book.join(Book_.author, JoinType.LEFT);
 
         query.select(
-                builder.construct(DetailBookViewDto.class, book.get(Book_.id), author.get(Author_.name), book.get(Book_.title),
-                        book.get(Book_.editorial), book.get(Book_.year), book.get(Book_.pages), book.get(Book_.language),
-                        book.get(Book_.format), book.get(Book_.state), book.get(Book_.price), book.get(Book_.currency),
+                builder.construct(DetailBookViewDto.class,
+                        book.get(Book_.id), author.get(Author_.id), author.get(Author_.name), book.get(Book_.title), book.get(Book_.editorial),
+                        book.get(Book_.year), book.get(Book_.pages), book.get(Book_.language), book.get(Book_.format),
+                        book.get(Book_.isbn), book.get(Book_.state), book.get(Book_.price), book.get(Book_.currency),
                         mathDetails.get(MathDetails_.subcategory), mathDetails.get(MathDetails_.exercise), mathDetails.get(MathDetails_.answer),
                         builder.nullLiteral(String.class), builder.nullLiteral(String.class), builder.nullLiteral(NationalityEnum.class))
         );
 
         query.where(addBookFilters(book, author, builder, filterBookDto));
-        List<BookViewDto> resultList = entityManager.createQuery(query).getResultStream()
-                .map(resultBook -> {
-                            DetailsDto detailsViewDto = detailsMapper.detailBookToMathDetailsDto(resultBook);
-                            return bookMapper.detailBookViewToBookViewDto(resultBook, detailsViewDto);
-                        }
-                )
-                .collect(Collectors.toList());
-        return resultList;
+        return entityManager.createQuery(query).getResultList();
     }
 
     @Transactional
-    public List<BookViewDto> getPhysicsBooks(FilterBookDto filterBookDto) {
+    public List<DetailBookViewDto> getPhysicsBooks(FilterBookDto filterBookDto) {
 
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<DetailBookViewDto> query = builder.createQuery(DetailBookViewDto.class);
@@ -134,22 +181,17 @@ public class BookServiceImp implements IBookService {
         Join<Book, Author> author = book.join(Book_.author, JoinType.LEFT);
 
         query.select(
-                builder.construct(DetailBookViewDto.class, book.get(Book_.id), author.get(Author_.name), book.get(Book_.title),
-                        book.get(Book_.editorial), book.get(Book_.year), book.get(Book_.pages), book.get(Book_.language),
-                        book.get(Book_.format), book.get(Book_.state), book.get(Book_.price), book.get(Book_.currency),
+                builder.construct(DetailBookViewDto.class,
+                        book.get(Book_.id), author.get(Author_.id), author.get(Author_.name), book.get(Book_.title), book.get(Book_.editorial),
+                        book.get(Book_.year), book.get(Book_.pages), book.get(Book_.language), book.get(Book_.format),
+                        book.get(Book_.isbn), book.get(Book_.state), book.get(Book_.price), book.get(Book_.currency),
                         physicsDetails.get(PhysicsDetails_.subcategory), physicsDetails.get(PhysicsDetails_.exercise),
                         physicsDetails.get(PhysicsDetails_.answer),
                         builder.nullLiteral(String.class), builder.nullLiteral(String.class), builder.nullLiteral(NationalityEnum.class))
         );
 
         query.where(addBookFilters(book, author, builder, filterBookDto));
-        List<BookViewDto> resultList = entityManager.createQuery(query).getResultStream()
-                .map(resultBook -> {
-                    DetailsDto detailsViewDto = detailsMapper.detailBookToPhysicsDetailsDto(resultBook);
-                    return bookMapper.detailBookViewToBookViewDto(resultBook, detailsViewDto);
-                })
-                .collect(Collectors.toList());
-        return resultList;
+        return entityManager.createQuery(query).getResultList();
     }
 
     @Override
@@ -199,19 +241,19 @@ public class BookServiceImp implements IBookService {
         DetailsDto updatedDetails;
 
         if (HistoryDetailsDto.class.isAssignableFrom(detailsDto.getClass())) {
-            HistoryDetails historyDetails = historyDetailsRepository.findById(((HistoryDetailsDto) detailsDto).getId())
+            HistoryDetails historyDetails = historyDetailsRepository.findById(bookId)
                     .orElseThrow(CategoryConflictException::new);
             detailsMapper.updateHistoryDetails(historyDetails, (HistoryDetailsDto) detailsDto, updatedBook);
             historyDetailsRepository.save(historyDetails);
             updatedDetails = detailsMapper.historyDetailsToDto(historyDetails);
         } else if (MathDetailsDto.class.isAssignableFrom(detailsDto.getClass())) {
-            MathDetails mathDetails = mathDetailsRepository.findById(((MathDetailsDto) detailsDto).getId())
+            MathDetails mathDetails = mathDetailsRepository.findById(bookId)
                     .orElseThrow(EntityNotFound::new);
             detailsMapper.updateMathDetails(mathDetails, (MathDetailsDto) detailsDto, updatedBook);
             mathDetailsRepository.save(mathDetails);
             updatedDetails = detailsMapper.mathDetailsToDto(mathDetails);
         } else if (PhysicsDetailsDto.class.isAssignableFrom(detailsDto.getClass())) {
-            PhysicsDetails physicsDetails = physicsDetailsRepository.findById(((PhysicsDetailsDto) detailsDto).getId())
+            PhysicsDetails physicsDetails = physicsDetailsRepository.findById(bookId)
                     .orElseThrow(EntityNotFound::new);
             detailsMapper.updatePhysicsDetails(physicsDetails, (PhysicsDetailsDto) detailsDto, updatedBook);
             physicsDetailsRepository.save(physicsDetails);
@@ -225,52 +267,50 @@ public class BookServiceImp implements IBookService {
 
     @Override
     @Transactional
-    public void deleteBook(Integer id, BookCategoryEnum bookCategory) {
-        if (bookRepository.findById(id).isPresent()) {
-            if (bookCategory.compareTo(BookCategoryEnum.PHYSICS) == 0) {
-                physicsDetailsRepository.deleteById(id);
-            } else if (bookCategory.compareTo(BookCategoryEnum.HISTORY) == 0) {
-                historyDetailsRepository.deleteById(id);
-            } else if (bookCategory.compareTo(BookCategoryEnum.MATH) == 0) {
-                mathDetailsRepository.deleteById(id);
-            } else {
-                throw new CategoryConflictException();
-            }
+    public void deleteBook(Integer id) {
+
+        if (physicsDetailsRepository.findById(id).isPresent()) {
+            physicsDetailsRepository.deleteById(id);
+        } else if (historyDetailsRepository.findById(id).isPresent()) {
+            historyDetailsRepository.deleteById(id);
+        } else if (mathDetailsRepository.findById(id).isPresent()) {
+            mathDetailsRepository.deleteById(id);
         } else {
             throw new EntityNotFound();
         }
-
     }
 
     private Predicate[] addBookFilters(Join bookJoin, Join authorJoin, CriteriaBuilder builder, FilterBookDto filterBookDto) {
         List<Predicate> filters = new ArrayList<>();
         if (!StringUtils.isEmpty(filterBookDto.getBookName())) {
-            filters.add(builder.like(bookJoin.get("title"), "%" + filterBookDto.getBookName() + "%"));
+            filters.add(builder.like(bookJoin.get(Book_.title), "%" + filterBookDto.getBookName() + "%"));
         }
 
         if (filterBookDto.getLanguage() != null) {
-            filters.add(builder.equal(bookJoin.get("language"), filterBookDto.getLanguage()));
+            filters.add(builder.equal(bookJoin.get(Book_.language), filterBookDto.getLanguage()));
         }
 
         if (!StringUtils.isEmpty(filterBookDto.getEditorial())) {
-            filters.add(builder.equal(bookJoin.get("editorial"), filterBookDto.getEditorial()));
+            filters.add(builder.equal(bookJoin.get(Book_.editorial), filterBookDto.getEditorial()));
         }
 
         if (filterBookDto.getYear() != null) {
-            filters.add(builder.equal(bookJoin.get("year"), filterBookDto.getYear()));
+            filters.add(builder.equal(bookJoin.get(Book_.year), filterBookDto.getYear()));
         }
 
         if (!StringUtils.isEmpty(filterBookDto.getFormat())) {
-            filters.add(builder.equal(bookJoin.get("format"), filterBookDto.getFormat()));
+            filters.add(builder.equal(bookJoin.get(Book_.format), filterBookDto.getFormat()));
         }
 
         if (!StringUtils.isEmpty(filterBookDto.getAuthorName())) {
-            filters.add(builder.like(authorJoin.get("name"), "%" + filterBookDto.getAuthorName() + "%"));
+            filters.add(builder.like(authorJoin.get(Author_.name), "%" + filterBookDto.getAuthorName() + "%"));
         }
 
         if (filterBookDto.getState() != null) {
-            filters.add(builder.equal(bookJoin.get("state"), filterBookDto.getState()));
+            filters.add(builder.equal(bookJoin.get(Book_.state), filterBookDto.getState()));
         }
+
+        filters.add(builder.equal(bookJoin.get(Book_.active), true));
 
         return filters.toArray(new Predicate[]{});
     }

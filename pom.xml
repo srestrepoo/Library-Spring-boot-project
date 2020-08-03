@@ -9,6 +9,7 @@
         <module>library-services</module>
         <module>library-commons</module>
         <module>library-mapping</module>
+        <module>library-integration</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

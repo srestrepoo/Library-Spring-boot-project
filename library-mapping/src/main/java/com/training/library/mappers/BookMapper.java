@@ -1,9 +1,9 @@
 package com.training.library.mappers;
 
-import com.training.library.dtos.BookDto;
-import com.training.library.dtos.BookViewDto;
-import com.training.library.dtos.DetailBookViewDto;
-import com.training.library.dtos.DetailsDto;
+import com.training.library.dtos.Book.BookDto;
+import com.training.library.dtos.Book.BookViewDto;
+import com.training.library.dtos.Book.DetailBookViewDto;
+import com.training.library.dtos.Details.DetailsDto;
 import com.training.library.entities.Author;
 import com.training.library.entities.Book;
 import org.mapstruct.Mapper;
@@ -15,6 +15,7 @@ public interface BookMapper {
 
     @Mapping(target = "author", source = "newAuthor")
     @Mapping(target = "id", source = "bookDto.id")
+    @Mapping(target = "active", source = "bookDto.active", defaultValue = "true")
     Book bookDtoToBook(BookDto bookDto, Author newAuthor);
 
     @Mapping(source = "author.id", target = "authorId")
@@ -30,5 +31,8 @@ public interface BookMapper {
 
     @Mapping(source = "detailsDto", target = "details")
     BookViewDto detailBookViewToBookViewDto(DetailBookViewDto detailBookViewDto, DetailsDto detailsDto);
+
+    @Mapping(source = "detailsDto", target = "detailsDto")
+    BookDto detailBookViewToBookDto(DetailBookViewDto orderQueryDto, DetailsDto detailsDto);
 
 }
