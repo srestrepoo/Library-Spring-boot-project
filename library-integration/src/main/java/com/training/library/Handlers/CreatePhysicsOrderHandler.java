@@ -37,9 +37,9 @@ public class CreatePhysicsOrderHandler implements GenericHandler<BookDto> {
 
         if(bookDto.getState().equals(StateEnum.ACCEPTABLE)){
             BookDto frenchBookDto;
-            // variable
-            if(findAuthorByNationality(NationalityEnum.FRANCE) != null){
-                frenchBookDto = bookDto.toBuilder().id(null).authorId(findAuthorByNationality(NationalityEnum.FRANCE))
+            Integer frenchAuthorId = findAuthorByNationality(NationalityEnum.FRANCE);
+            if(frenchAuthorId != null){
+                frenchBookDto = bookDto.toBuilder().id(null).authorId(frenchAuthorId)
                         .language(LanguageEnum.FRENCH).state(StateEnum.EXCELLENT).build();
             } else {
                 frenchBookDto = bookDto.toBuilder().id(null).authorId(bookDto.getAuthorId())
