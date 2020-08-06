@@ -267,6 +267,12 @@ public class BookServiceImp implements IBookService {
 
     @Override
     @Transactional
+    public void updateStateAndActiveById(Integer id, StateEnum state) {
+        bookRepository.updateStateAndActiveById(id, state, !state.equals(StateEnum.DISCARDED));
+    }
+
+    @Override
+    @Transactional
     public void deleteBook(Integer id) {
 
         if (physicsDetailsRepository.findById(id).isPresent()) {

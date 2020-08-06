@@ -21,13 +21,8 @@ public class UpdateBookStateHandler implements GenericHandler<BookDto> {
 
     @Override
     public Message<BookDto> handle(BookDto bookDto, MessageHeaders messageHeaders) throws MessagingException {
-        BookDto bookToUpdate;
-        if(bookDto.getState().getValue() == 2){
-            bookToUpdate = bookDto.toBuilder().id(null).state(this.getPreviousState(bookDto.getState())).active(false).build();
-        }else{
-            bookToUpdate = bookDto.toBuilder().id(null).state(this.getPreviousState(bookDto.getState())).build();
-        }
-        bookService.updateBook(bookDto.getId(), bookToUpdate);
+
+        bookService.updateStateAndActiveById(bookDto.getId(), this.getPreviousState(bookDto.getState()));
         return MessageBuilder.withPayload(bookDto).copyHeaders(messageHeaders).build();
     }
 

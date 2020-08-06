@@ -1,26 +1,22 @@
-package com.training.library.Handlers;
+package com.training.library.Handlers.CreateOrderHandlers;
 
 import com.training.library.IAuthorService;
 import com.training.library.IBookService;
 import com.training.library.dtos.Author.AuthorDto;
 import com.training.library.dtos.Book.BookDto;
 import com.training.library.dtos.Author.FilterAuthorDto;
+import com.training.library.dtos.Details.PhysicsDetailsDto;
 import com.training.library.enums.LanguageEnum;
 import com.training.library.enums.NationalityEnum;
 import com.training.library.enums.StateEnum;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.integration.handler.GenericHandler;
-import org.springframework.messaging.Message;
-import org.springframework.messaging.MessageHeaders;
-import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class CreatePhysicsOrderHandler implements GenericHandler<BookDto> {
+public class    CreatePhysicsOrderHandler implements ICreateOrderHandler {
 
     @Autowired
     private IBookService bookService;
@@ -29,8 +25,12 @@ public class CreatePhysicsOrderHandler implements GenericHandler<BookDto> {
     private IAuthorService authorService;
 
     @Override
-    @Transactional
-    public Message<List<BookDto>> handle(BookDto bookDto, MessageHeaders messageHeaders) {
+    public Class getBookDetailClass() {
+        return PhysicsDetailsDto.class;
+    }
+
+    @Override
+    public List<BookDto> handleOrder(BookDto bookDto) {
         BookDto newBookDto = bookDto.toBuilder().id(null).state(StateEnum.EXCELLENT).build();
         List<BookDto> bookDtoList = new ArrayList();
         bookDtoList.add(bookService.createBook(newBookDto));
@@ -47,7 +47,7 @@ public class CreatePhysicsOrderHandler implements GenericHandler<BookDto> {
             }
             bookDtoList.add(bookService.createBook(frenchBookDto));
         }
-        return MessageBuilder.withPayload(bookDtoList).copyHeaders(messageHeaders).build();
+        return bookDtoList;
     }
 
     private Integer findAuthorByNationality(NationalityEnum nationality) {

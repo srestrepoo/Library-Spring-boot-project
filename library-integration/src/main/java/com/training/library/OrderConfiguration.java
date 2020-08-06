@@ -2,6 +2,10 @@ package com.training.library;
 
 import com.training.library.Handlers.*;
 ;
+import com.training.library.Handlers.CreateOrderHandlers.CreateHistoryOrderHandler;
+import com.training.library.Handlers.CreateOrderHandlers.CreateMathOrderHandler;
+import com.training.library.Handlers.CreateOrderHandlers.CreateOrderProxyHandler;
+import com.training.library.Handlers.CreateOrderHandlers.CreatePhysicsOrderHandler;
 import com.training.library.dtos.Book.BookDto;
 import com.training.library.dtos.Details.HistoryDetailsDto;
 import com.training.library.dtos.Details.MathDetailsDto;
@@ -15,7 +19,6 @@ import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.dsl.MessageChannels;
 import org.springframework.messaging.SubscribableChannel;
 
-import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -27,13 +30,7 @@ public class OrderConfiguration {
     private GetBooksHandler getBooksHandler;
 
     @Autowired
-    private CreateMathOrderHandler createMathOrderHandler;
-
-    @Autowired
-    private CreateHistoryOrderHandler createHistoryOrderHandler;
-
-    @Autowired
-    private CreatePhysicsOrderHandler createPhysicsOrderHandler;
+    private CreateOrderProxyHandler createOrderProxyHandler;
 
     @Autowired
     private UpdateBookStateHandler updateBookStateHandler;
@@ -69,14 +66,17 @@ public class OrderConfiguration {
         return IntegrationFlows
                 .from(inputChannel())
                 .handle(getBooksHandler)
-
                 .split()
                 .channel(e -> e.executor(this.executor()))
                 .route(BookDto.class, this::getBookCategory,
                         mapping -> mapping
                                 .subFlowMapping(PhysicsDetailsDto.class, subFlow -> subFlow
-                                        .handle(updateBookStateHandler)
-                                        .handle(createPhysicsOrderHandler)
+                                        .<BookDto>filter(bookDto -> bookDto.getState().equals(StateEnum.ACCEPTABLE) ||
+                                                        bookDto.getState().equals(StateEnum.BAD),
+                                                filterEndpointSpec -> filterEndpointSpec.discardFlow(discFlow -> discFlow
+                                                        .handle(discardFilteredHandler)
+                                                        .channel(aggregateChannel())
+                                                ))
                                 )
                                 .subFlowMapping(MathDetailsDto.class, subFlow -> subFlow
                                         .<BookDto>filter(bookDto -> bookDto.getState().equals(StateEnum.ACCEPTABLE) ||
@@ -85,8 +85,6 @@ public class OrderConfiguration {
                                                         .handle(discardFilteredHandler)
                                                         .channel(aggregateChannel())
                                                 ))
-                                        .handle(updateBookStateHandler)
-                                        .handle(createMathOrderHandler)
                                 )
                                 .subFlowMapping(HistoryDetailsDto.class, subFlow -> subFlow
                                         .filter(historyBooksFilter,
@@ -94,11 +92,11 @@ public class OrderConfiguration {
                                                         .handle(discardFilteredHandler)
                                                         .channel(aggregateChannel())
                                                 ))
-                                        .handle(updateBookStateHandler)
-                                        .handle(createHistoryOrderHandler)
                                 )
 
                 )
+                .handle(updateBookStateHandler)
+                .handle(createOrderProxyHandler)
                 .channel(aggregateChannel())
                 .aggregate(a -> a.processor(getBooksOrderAggregator()))
                 .get();
