@@ -4,6 +4,7 @@ import com.training.library.dtos.Book.BookDto;
 import com.training.library.dtos.Book.BookViewDto;
 import com.training.library.dtos.Book.DetailBookViewDto;
 import com.training.library.dtos.Book.FilterBookDto;
+import com.training.library.dtos.BookOrder.BookOrderDto;
 import com.training.library.dtos.Details.DetailsDto;
 import com.training.library.dtos.Details.HistoryDetailsDto;
 import com.training.library.dtos.Details.MathDetailsDto;
@@ -38,6 +39,9 @@ public class BookServiceImp implements IBookService {
 
     @Autowired
     private AuthorRepository authorRepository;
+
+    @Autowired
+    private RegisterRepository registerRepository;
 
     @Autowired
     private BookMapper bookMapper;
@@ -208,25 +212,30 @@ public class BookServiceImp implements IBookService {
     public BookDto createBook(BookDto newBook) {
         Author author = authorRepository.findById(newBook.getAuthorId()).orElseThrow(EntityNotFound::new);
         Book createdBook = bookRepository.save(bookMapper.bookDtoToBook(newBook, author));
+        DetailsDto createdDetailsDto = createDetails(newBook.getDetailsDto(), createdBook);
+
+        return bookMapper.bookToCreatedBookDto(createdBook, createdDetailsDto);
+    }
+
+    private DetailsDto createDetails(DetailsDto detailsDto, Book book){
         DetailsDto createdDetailsDto;
 
-        if (HistoryDetailsDto.class.isAssignableFrom(newBook.getDetailsDto().getClass())) {
-            HistoryDetails historyDetails = detailsMapper.dtoToHistoryDetails((HistoryDetailsDto) newBook.getDetailsDto(), createdBook);
+        if (HistoryDetailsDto.class.isAssignableFrom(detailsDto.getClass())) {
+            HistoryDetails historyDetails = detailsMapper.dtoToHistoryDetails((HistoryDetailsDto) detailsDto, book);
             HistoryDetails createdDetails = historyDetailsRepository.save(historyDetails);
             createdDetailsDto = detailsMapper.historyDetailsToDto(createdDetails);
-        } else if (MathDetailsDto.class.isAssignableFrom(newBook.getDetailsDto().getClass())) {
-            MathDetails mathDetails = detailsMapper.dtoToMathDetails((MathDetailsDto) newBook.getDetailsDto(), createdBook);
+        } else if (MathDetailsDto.class.isAssignableFrom(detailsDto.getClass())) {
+            MathDetails mathDetails = detailsMapper.dtoToMathDetails((MathDetailsDto) detailsDto, book);
             MathDetails createdDetails = mathDetailsRepository.save(mathDetails);
             createdDetailsDto = detailsMapper.mathDetailsToDto(createdDetails);
-        } else if (PhysicsDetailsDto.class.isAssignableFrom(newBook.getDetailsDto().getClass())) {
-            PhysicsDetails physicsDetails = detailsMapper.dtoToPhysicsDetails((PhysicsDetailsDto) newBook.getDetailsDto(), createdBook);
+        } else if (PhysicsDetailsDto.class.isAssignableFrom(detailsDto.getClass())) {
+            PhysicsDetails physicsDetails = detailsMapper.dtoToPhysicsDetails((PhysicsDetailsDto) detailsDto, book);
             PhysicsDetails createdDetails = physicsDetailsRepository.save(physicsDetails);
             createdDetailsDto = detailsMapper.physicsDetailsToDto(createdDetails);
         } else {
             throw new CategoryConflictException();
         }
-
-        return bookMapper.bookToCreatedBookDto(createdBook, createdDetailsDto);
+        return createdDetailsDto;
     }
 
     @Override
@@ -276,10 +285,13 @@ public class BookServiceImp implements IBookService {
     public void deleteBook(Integer id) {
 
         if (physicsDetailsRepository.findById(id).isPresent()) {
+            registerRepository.deleteByBookId(id);
             physicsDetailsRepository.deleteById(id);
         } else if (historyDetailsRepository.findById(id).isPresent()) {
+            registerRepository.deleteByBookId(id);
             historyDetailsRepository.deleteById(id);
         } else if (mathDetailsRepository.findById(id).isPresent()) {
+            registerRepository.deleteByBookId(id);
             mathDetailsRepository.deleteById(id);
         } else {
             throw new EntityNotFound();

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -21,7 +22,6 @@ public class DiscardFilteredHandler implements GenericHandler<BookDto> {
     @Override
     @Transactional
     public Message<List<BookDto>> handle(BookDto bookDtoList, MessageHeaders messageHeaders) {
-        List<BookDto> emptyList = new ArrayList();
-        return MessageBuilder.withPayload(emptyList).build();
+        return MessageBuilder.withPayload(Collections.<BookDto>emptyList()).build();
     }
 }

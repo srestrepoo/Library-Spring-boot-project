@@ -2,15 +2,14 @@ package com.training.library;
 
 import com.training.library.Handlers.*;
 ;
-import com.training.library.Handlers.CreateOrderHandlers.CreateHistoryOrderHandler;
-import com.training.library.Handlers.CreateOrderHandlers.CreateMathOrderHandler;
-import com.training.library.Handlers.CreateOrderHandlers.CreateOrderProxyHandler;
-import com.training.library.Handlers.CreateOrderHandlers.CreatePhysicsOrderHandler;
+import com.training.library.Handlers.CreateOrderHandlers.*;
 import com.training.library.dtos.Book.BookDto;
 import com.training.library.dtos.Details.HistoryDetailsDto;
 import com.training.library.dtos.Details.MathDetailsDto;
 import com.training.library.dtos.Details.PhysicsDetailsDto;
+import com.training.library.dtos.Register.RegisterViewDto;
 import com.training.library.enums.StateEnum;
+import com.training.library.exceptions.EntityNotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +17,12 @@ import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.dsl.MessageChannels;
 import org.springframework.messaging.SubscribableChannel;
+import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.messaging.support.MessageBuilder;
 
+
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -40,6 +44,9 @@ public class OrderConfiguration {
 
     @Autowired
     private DiscardFilteredHandler discardFilteredHandler;
+
+    @Autowired
+    private AddRegistersHandler addRegistersHandler;
 
     @Bean(name = "inputChannel")
     public SubscribableChannel inputChannel() {
@@ -66,6 +73,9 @@ public class OrderConfiguration {
         return IntegrationFlows
                 .from(inputChannel())
                 .handle(getBooksHandler)
+                .filter(CollectionUtils::isNotEmpty, filterEndpointSpec -> filterEndpointSpec.discardFlow(discFlow -> discFlow
+                        .handle((payload, messageHeaders) -> Collections.<RegisterViewDto>emptyList())
+                ))
                 .split()
                 .channel(e -> e.executor(this.executor()))
                 .route(BookDto.class, this::getBookCategory,
@@ -99,6 +109,10 @@ public class OrderConfiguration {
                 .handle(createOrderProxyHandler)
                 .channel(aggregateChannel())
                 .aggregate(a -> a.processor(getBooksOrderAggregator()))
+                .filter(CollectionUtils::isNotEmpty, filterEndpointSpec -> filterEndpointSpec.discardFlow(discFlow -> discFlow
+                        .handle((payload, messageHeaders) -> Collections.<RegisterViewDto>emptyList())
+                ))
+                .handle(addRegistersHandler)
                 .get();
     }
 

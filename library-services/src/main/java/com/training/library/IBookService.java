@@ -3,6 +3,7 @@ package com.training.library;
 import com.training.library.dtos.Book.BookDto;
 import com.training.library.dtos.Book.BookViewDto;
 import com.training.library.dtos.Book.FilterBookDto;
+import com.training.library.dtos.BookOrder.BookOrderDto;
 import com.training.library.enums.StateEnum;
 
 import java.util.List;

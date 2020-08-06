@@ -35,9 +35,9 @@ public class BookDto {
     private Integer price;
     @NonNull
     private CurrencyEnum currency;
-    @Builder.Default
-    private Boolean active = true;
-    @NonNull
+
+    private Boolean active;
+
     private DetailsDto detailsDto;
 
 }
