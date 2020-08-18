@@ -14,9 +14,10 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Component
-public class    CreatePhysicsOrderHandler implements ICreateOrderHandler {
+public class CreatePhysicsOrderHandler implements ICreateOrderHandler {
 
     @Autowired
     private IBookService bookService;
@@ -35,29 +36,22 @@ public class    CreatePhysicsOrderHandler implements ICreateOrderHandler {
         List<BookDto> bookDtoList = new ArrayList();
         bookDtoList.add(bookService.createBook(newBookDto));
 
-        if(bookDto.getState().equals(StateEnum.ACCEPTABLE)){
-            BookDto frenchBookDto;
-            Integer frenchAuthorId = findAuthorByNationality(NationalityEnum.FRANCE);
-            if(frenchAuthorId != null){
-                frenchBookDto = bookDto.toBuilder().id(null).authorId(frenchAuthorId)
-                        .language(LanguageEnum.FRENCH).state(StateEnum.EXCELLENT).build();
-            } else {
-                frenchBookDto = bookDto.toBuilder().id(null).authorId(bookDto.getAuthorId())
-                        .language(LanguageEnum.FRENCH).state(StateEnum.EXCELLENT).build();
-            }
+        if (bookDto.getState().equals(StateEnum.ACCEPTABLE)) {
+
+            Integer authorId = Optional.ofNullable(findAuthorByNationality(NationalityEnum.FRANCE))
+                    .orElse(bookDto.getAuthorId());
+            BookDto frenchBookDto = bookDto.toBuilder().id(null).authorId(authorId)
+                    .language(LanguageEnum.FRENCH).state(StateEnum.EXCELLENT).build();
+
             bookDtoList.add(bookService.createBook(frenchBookDto));
         }
         return bookDtoList;
     }
 
     private Integer findAuthorByNationality(NationalityEnum nationality) {
-        FilterAuthorDto filterAuthorDto = FilterAuthorDto.builder().nationality(nationality).build();
+        FilterAuthorDto filterAuthorDto = FilterAuthorDto.builder().nationality(nationality).maxResults(1).build();
         List<AuthorDto> authorByNationalityList = authorService.getAllAuthors(filterAuthorDto);
-        if(authorByNationalityList.size() > 0){
-            return authorByNationalityList.get(0).getId();
-        } else{
-            return null;
-        }
+        return (authorByNationalityList.size() > 0)? authorByNationalityList.get(0).getId(): null;
     }
 
 }

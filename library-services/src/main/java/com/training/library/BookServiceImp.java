@@ -1,17 +1,13 @@
 package com.training.library;
 
+import com.training.library.DetailsService.DetailsServiceProxy;
 import com.training.library.dtos.Book.BookDto;
 import com.training.library.dtos.Book.BookViewDto;
 import com.training.library.dtos.Book.DetailBookViewDto;
 import com.training.library.dtos.Book.FilterBookDto;
-import com.training.library.dtos.BookOrder.BookOrderDto;
 import com.training.library.dtos.Details.DetailsDto;
-import com.training.library.dtos.Details.HistoryDetailsDto;
-import com.training.library.dtos.Details.MathDetailsDto;
-import com.training.library.dtos.Details.PhysicsDetailsDto;
 import com.training.library.entities.*;
 import com.training.library.enums.*;
-import com.training.library.exceptions.CategoryConflictException;
 import com.training.library.exceptions.EntityNotFound;
 import com.training.library.mappers.BookMapper;
 import com.training.library.mappers.DetailsMapper;
@@ -58,6 +54,9 @@ public class BookServiceImp implements IBookService {
     @Autowired
     private PhysicsDetailsRepository physicsDetailsRepository;
 
+    @Autowired
+    private DetailsServiceProxy detailsServiceProxy;
+
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -67,20 +66,23 @@ public class BookServiceImp implements IBookService {
 
         List<BookViewDto> mathBookList = getMathBooks(filterBookDto).stream()
                 .map(resultBook -> {
-                            DetailsDto detailsViewDto = detailsMapper.detailBookToMathDetailsDto(resultBook);
-                            return bookMapper.detailBookViewToBookViewDto(resultBook, detailsViewDto); })
+                    DetailsDto detailsViewDto = detailsMapper.detailBookToMathDetailsDto(resultBook);
+                    return bookMapper.detailBookViewToBookViewDto(resultBook, detailsViewDto);
+                })
                 .collect(Collectors.toList());
 
         List<BookViewDto> historyBookList = getHistoryBooks(filterBookDto).stream()
                 .map(resultBook -> {
                     DetailsDto detailsViewDto = detailsMapper.detailBookToHistoryDetailsDto(resultBook);
-                    return bookMapper.detailBookViewToBookViewDto(resultBook, detailsViewDto); })
+                    return bookMapper.detailBookViewToBookViewDto(resultBook, detailsViewDto);
+                })
                 .collect(Collectors.toList());
 
         List<BookViewDto> physicsBookList = getPhysicsBooks(filterBookDto).stream()
                 .map(resultBook -> {
                     DetailsDto detailsViewDto = detailsMapper.detailBookToPhysicsDetailsDto(resultBook);
-                    return bookMapper.detailBookViewToBookViewDto(resultBook, detailsViewDto); })
+                    return bookMapper.detailBookViewToBookViewDto(resultBook, detailsViewDto);
+                })
                 .collect(Collectors.toList());
 
         List<List<BookViewDto>> categoriesList = Arrays.asList(
@@ -101,19 +103,22 @@ public class BookServiceImp implements IBookService {
         List<BookDto> mathBookList = getMathBooks(filterBookDto).stream()
                 .map(resultBook -> {
                     DetailsDto detailsViewDto = detailsMapper.detailBookToMathDetailsDto(resultBook);
-                    return bookMapper.detailBookViewToBookDto(resultBook, detailsViewDto); })
+                    return bookMapper.detailBookViewToBookDto(resultBook, detailsViewDto);
+                })
                 .collect(Collectors.toList());
 
         List<BookDto> historyBookList = getHistoryBooks(filterBookDto).stream()
                 .map(resultBook -> {
                     DetailsDto detailsViewDto = detailsMapper.detailBookToHistoryDetailsDto(resultBook);
-                    return bookMapper.detailBookViewToBookDto(resultBook, detailsViewDto); })
+                    return bookMapper.detailBookViewToBookDto(resultBook, detailsViewDto);
+                })
                 .collect(Collectors.toList());
 
         List<BookDto> physicsBookList = getPhysicsBooks(filterBookDto).stream()
                 .map(resultBook -> {
                     DetailsDto detailsViewDto = detailsMapper.detailBookToPhysicsDetailsDto(resultBook);
-                    return bookMapper.detailBookViewToBookDto(resultBook, detailsViewDto); })
+                    return bookMapper.detailBookViewToBookDto(resultBook, detailsViewDto);
+                })
                 .collect(Collectors.toList());
 
         List<List<BookDto>> categoriesList = Arrays.asList(
@@ -212,30 +217,25 @@ public class BookServiceImp implements IBookService {
     public BookDto createBook(BookDto newBook) {
         Author author = authorRepository.findById(newBook.getAuthorId()).orElseThrow(EntityNotFound::new);
         Book createdBook = bookRepository.save(bookMapper.bookDtoToBook(newBook, author));
-        DetailsDto createdDetailsDto = createDetails(newBook.getDetailsDto(), createdBook);
+        DetailsDto createdDetailsDto = detailsServiceProxy.createDetails(newBook.getDetailsDto(), createdBook);
 
         return bookMapper.bookToCreatedBookDto(createdBook, createdDetailsDto);
     }
 
-    private DetailsDto createDetails(DetailsDto detailsDto, Book book){
-        DetailsDto createdDetailsDto;
+    @Override
+    @Transactional
+    public List<BookDto> createBookCopies(Integer authorId, DetailsDto detailsDto, List<BookDto> newBooksDto) {
+        Author author = authorRepository.findById(authorId).orElseThrow(EntityNotFound::new);
+        List<Book> createdBooks = bookRepository.saveAll(
+                newBooksDto.stream()
+                        .map(bookDto -> bookMapper.bookDtoToBook(bookDto, author))
+                        .collect(Collectors.toList())
+        );
 
-        if (HistoryDetailsDto.class.isAssignableFrom(detailsDto.getClass())) {
-            HistoryDetails historyDetails = detailsMapper.dtoToHistoryDetails((HistoryDetailsDto) detailsDto, book);
-            HistoryDetails createdDetails = historyDetailsRepository.save(historyDetails);
-            createdDetailsDto = detailsMapper.historyDetailsToDto(createdDetails);
-        } else if (MathDetailsDto.class.isAssignableFrom(detailsDto.getClass())) {
-            MathDetails mathDetails = detailsMapper.dtoToMathDetails((MathDetailsDto) detailsDto, book);
-            MathDetails createdDetails = mathDetailsRepository.save(mathDetails);
-            createdDetailsDto = detailsMapper.mathDetailsToDto(createdDetails);
-        } else if (PhysicsDetailsDto.class.isAssignableFrom(detailsDto.getClass())) {
-            PhysicsDetails physicsDetails = detailsMapper.dtoToPhysicsDetails((PhysicsDetailsDto) detailsDto, book);
-            PhysicsDetails createdDetails = physicsDetailsRepository.save(physicsDetails);
-            createdDetailsDto = detailsMapper.physicsDetailsToDto(createdDetails);
-        } else {
-            throw new CategoryConflictException();
-        }
-        return createdDetailsDto;
+        return createdBooks.stream()
+                .map(book -> bookMapper.bookToCreatedBookDto(book,
+                        detailsServiceProxy.createDetails(detailsDto, book))
+                ).collect(Collectors.toList());
     }
 
     @Override
@@ -247,29 +247,7 @@ public class BookServiceImp implements IBookService {
         Book updatedBook = bookRepository.save(bookToUpdate);
 
         DetailsDto detailsDto = bookDto.getDetailsDto();
-        DetailsDto updatedDetails;
-
-        if (HistoryDetailsDto.class.isAssignableFrom(detailsDto.getClass())) {
-            HistoryDetails historyDetails = historyDetailsRepository.findById(bookId)
-                    .orElseThrow(CategoryConflictException::new);
-            detailsMapper.updateHistoryDetails(historyDetails, (HistoryDetailsDto) detailsDto, updatedBook);
-            historyDetailsRepository.save(historyDetails);
-            updatedDetails = detailsMapper.historyDetailsToDto(historyDetails);
-        } else if (MathDetailsDto.class.isAssignableFrom(detailsDto.getClass())) {
-            MathDetails mathDetails = mathDetailsRepository.findById(bookId)
-                    .orElseThrow(EntityNotFound::new);
-            detailsMapper.updateMathDetails(mathDetails, (MathDetailsDto) detailsDto, updatedBook);
-            mathDetailsRepository.save(mathDetails);
-            updatedDetails = detailsMapper.mathDetailsToDto(mathDetails);
-        } else if (PhysicsDetailsDto.class.isAssignableFrom(detailsDto.getClass())) {
-            PhysicsDetails physicsDetails = physicsDetailsRepository.findById(bookId)
-                    .orElseThrow(EntityNotFound::new);
-            detailsMapper.updatePhysicsDetails(physicsDetails, (PhysicsDetailsDto) detailsDto, updatedBook);
-            physicsDetailsRepository.save(physicsDetails);
-            updatedDetails = detailsMapper.physicsDetailsToDto(physicsDetails);
-        } else {
-            throw new CategoryConflictException();
-        }
+        DetailsDto updatedDetails = detailsServiceProxy.updateDetails(bookId, updatedBook, detailsDto);
 
         return bookMapper.bookToCreatedBookDto(updatedBook, updatedDetails);
     }

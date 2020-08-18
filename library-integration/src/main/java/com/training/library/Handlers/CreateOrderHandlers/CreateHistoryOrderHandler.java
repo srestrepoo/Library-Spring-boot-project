@@ -7,7 +7,7 @@ import com.training.library.enums.StateEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Component
@@ -23,9 +23,8 @@ public class CreateHistoryOrderHandler implements ICreateOrderHandler {
 
     @Override
     public List<BookDto> handleOrder(BookDto bookDto) {
-        List<BookDto> bookDtoList = new ArrayList();
-        bookDtoList.add(bookService.createBook(bookDto.toBuilder().id(null).state(StateEnum.EXCELLENT).build()));
-        return bookDtoList;
+
+        return Arrays.asList(bookService.createBook(bookDto.toBuilder().id(null).state(StateEnum.EXCELLENT).build()));
     }
 
 }

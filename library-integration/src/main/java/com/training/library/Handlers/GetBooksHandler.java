@@ -20,7 +20,6 @@ public class GetBooksHandler implements GenericHandler<FilterBookDto> {
 
     @Override
     public Message<List<BookDto>> handle(FilterBookDto filterBookDto, MessageHeaders messageHeaders) {
-        List<BookDto> bookDtoList = bookService.getAllBooks(filterBookDto);
-        return MessageBuilder.withPayload(bookDtoList).build();
+        return MessageBuilder.withPayload(bookService.getAllBooks(filterBookDto)).build();
     }
 }

@@ -5,8 +5,6 @@ import com.training.library.dtos.Author.AuthorViewDto;
 import com.training.library.dtos.Author.FilterAuthorDto;
 import com.training.library.dtos.Book.BookDto;
 import com.training.library.entities.Author;
-import com.training.library.enums.LanguageEnum;
-import com.training.library.enums.NationalityEnum;
 import com.training.library.exceptions.EntityNotFound;
 import com.training.library.mappers.AuthorMapper;
 import com.training.library.repositories.AuthorRepository;
@@ -20,6 +18,7 @@ import javax.persistence.criteria.*;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,27 +38,14 @@ public class AuthorServiceImp implements IAuthorService {
 
     @Override
     @Transactional
-    public List<AuthorViewDto> getAllAuthorsView(String name, LanguageEnum nativeLanguage, NationalityEnum nationality) {
+    public List<AuthorViewDto> getAllAuthorsView(FilterAuthorDto filterAuthorDto) {
 
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Author> query = builder.createQuery(Author.class);
         Root<Author> author = query.from(Author.class);
         query.select(author);
 
-        List<Predicate> filters = new ArrayList<>();
-        if (!StringUtils.isEmpty(name)) {
-            filters.add(builder.like(author.get("name"), "%" + name + "%"));
-        }
-
-        if (nativeLanguage != null) {
-            filters.add(builder.equal(author.get("nativeLanguage"), nativeLanguage));
-        }
-
-        if (nationality != null) {
-            filters.add(builder.equal(author.get("nationality"), nationality));
-        }
-
-        query.where(filters.toArray(new Predicate[]{}));
+        query.where(addAuthorFilters(author, builder, filterAuthorDto));
 
         return entityManager.createQuery(query).getResultList().stream()
                 .map(this::getBooksNumberByAuthor)
@@ -76,10 +62,11 @@ public class AuthorServiceImp implements IAuthorService {
         Root<Author> author = query.from(Author.class);
         query.select(author);
 
-
         query.where(addAuthorFilters(author, builder, filterAuthorDto));
 
-        return entityManager.createQuery(query).getResultStream()
+        return entityManager.createQuery(query)
+                .setMaxResults(Optional.ofNullable(filterAuthorDto.getMaxResults()).orElse(20))
+                .getResultStream()
                 .map(authorMapper::authorToAuthorDto)
                 .collect(Collectors.toList());
     }

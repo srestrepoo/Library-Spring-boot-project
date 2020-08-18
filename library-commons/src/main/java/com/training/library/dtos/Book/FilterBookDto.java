@@ -5,6 +5,7 @@ import com.training.library.enums.LanguageEnum;
 import com.training.library.enums.StateEnum;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder

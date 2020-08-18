@@ -7,7 +7,6 @@ import com.training.library.enums.StateEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,17 +22,16 @@ public class CreateMathOrderHandler implements ICreateOrderHandler {
     }
 
     @Override
-    @Transactional
     public List<BookDto> handleOrder(BookDto bookDto) {
-        List<BookDto> bookDtoList = new ArrayList();
-        if(bookDto.getState().equals(StateEnum.ACCEPTABLE)){
-            bookDtoList.add(bookService.createBook(bookDto.toBuilder().id(null).state(StateEnum.EXCELLENT).build()));
-        } else {
-            for(int index = 0; index < 3; index++){
-                bookDtoList.add(bookService.createBook(bookDto.toBuilder().id(null).state(StateEnum.EXCELLENT).build()));
-            }
+        List<BookDto> bookDtoList = new ArrayList<>();
+
+        Integer numberOfCopies = (bookDto.getState().equals(StateEnum.BAD)) ? 3 : 1;
+
+        for (int index = 0; index < numberOfCopies; index++) {
+            bookDtoList.add(bookDto.toBuilder().id(null).state(StateEnum.EXCELLENT).build());
         }
-        return bookDtoList;
+
+        return bookService.createBookCopies(bookDto.getAuthorId(), bookDto.getDetailsDto(), bookDtoList);
     }
 
 }

@@ -5,6 +5,8 @@ import com.training.library.OrderGateway;
 import com.training.library.dtos.Book.BookDto;
 import com.training.library.dtos.Book.BookViewDto;
 import com.training.library.dtos.Book.FilterBookDto;
+import com.training.library.dtos.Register.RegisterDto;
+import com.training.library.dtos.Register.RegisterViewDto;
 import com.training.library.enums.LanguageEnum;
 import com.training.library.enums.StateEnum;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +28,7 @@ public class BookController {
     private OrderGateway orderGateway;
 
     @GetMapping("/integration")
-    public ResponseEntity<List<BookDto>> integration(
+    public ResponseEntity<List<RegisterViewDto>> integration(
             @RequestParam(required = false) String bookName,
             @RequestParam(required = false) String authorName,
             @RequestParam(required = false) LanguageEnum language,
@@ -46,9 +48,9 @@ public class BookController {
                 .format(format)
                 .state(state).build();
 
-        List<BookDto> bookDtoList = orderGateway.createOrder(filterBookDto);
+        List<RegisterViewDto> registerViewDtoList = orderGateway.createOrder(filterBookDto);
 
-        return new ResponseEntity<>(bookDtoList, HttpStatus.OK);
+        return new ResponseEntity<>(registerViewDtoList, HttpStatus.OK);
     }
 
     @GetMapping()

@@ -28,10 +28,8 @@ public class RegisterServiceImp implements IRegisterService{
                 .map(registerDto -> registerMapper.dtoToRegister(registerDto))
                 .collect(Collectors.toList());
 
-        List<RegisterViewDto> registerViewDtoList = registerRepository.saveAll(registerList).stream()
+        return registerRepository.saveAll(registerList).stream()
                 .map(register -> registerMapper.registerToRegisterViewDto(register))
                 .collect(Collectors.toList());
-
-        return registerViewDtoList;
     }
 }

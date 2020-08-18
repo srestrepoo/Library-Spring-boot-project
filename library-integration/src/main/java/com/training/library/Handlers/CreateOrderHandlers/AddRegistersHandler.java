@@ -6,7 +6,6 @@ import com.training.library.dtos.Book.BookDto;
 import com.training.library.dtos.BookOrder.BookOrderDto;
 import com.training.library.dtos.Register.RegisterDto;
 import com.training.library.dtos.Register.RegisterViewDto;
-import com.training.library.entities.Register;
 import com.training.library.mappers.RegisterMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.integration.handler.GenericHandler;
@@ -29,7 +28,7 @@ public class AddRegistersHandler implements GenericHandler<List<BookDto>> {
     private IRegisterService registerService;
 
     @Override
-    public Object handle(List<BookDto> bookDtoList, MessageHeaders messageHeaders) {
+    public List<RegisterViewDto> handle(List<BookDto> bookDtoList, MessageHeaders messageHeaders) {
         BookOrderDto bookOrderDto = bookOrderService.createBookOrder(new BookOrderDto());
 
         List<RegisterDto> registerDtoList = bookDtoList.stream()
@@ -37,8 +36,6 @@ public class AddRegistersHandler implements GenericHandler<List<BookDto>> {
                         RegisterDto.builder().bookDto(bookDto).bookOrderDto(bookOrderDto).build())
                 .collect(Collectors.toList());
 
-        List<RegisterViewDto> registerViewDtoList = registerService.saveRegisters(registerDtoList);
-
-        return registerViewDtoList;
+        return registerService.saveRegisters(registerDtoList);
     }
 }
