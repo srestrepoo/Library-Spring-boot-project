@@ -1,6 +1,7 @@
 package com.training.library;
 
 
+import com.training.library.channels.OrderChannel;
 import com.training.library.dtos.Book.BookDto;
 import com.training.library.dtos.Book.FilterBookDto;
 import com.training.library.dtos.Register.RegisterDto;
@@ -13,6 +14,6 @@ import java.util.List;
 @MessagingGateway(name="OrderGateway")
 public interface OrderGateway {
 
-    @Gateway(requestChannel = "inputChannel")
+    @Gateway(requestChannel = OrderChannel.inputOrderChannel)
     List<RegisterViewDto> createOrder(FilterBookDto filterBookDto);
 }

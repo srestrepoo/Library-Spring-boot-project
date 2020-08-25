@@ -3,6 +3,7 @@ package com.training.library;
 import com.training.library.Handlers.*;
 ;
 import com.training.library.Handlers.CreateOrderHandlers.*;
+import com.training.library.channels.OrderChannel;
 import com.training.library.dtos.Book.BookDto;
 import com.training.library.dtos.Details.HistoryDetailsDto;
 import com.training.library.dtos.Details.MathDetailsDto;
@@ -42,13 +43,13 @@ public class OrderConfiguration {
     @Autowired
     private AddRegistersHandler addRegistersHandler;
 
-    @Bean(name = "inputChannel")
-    public SubscribableChannel inputChannel() {
+    @Bean(name = OrderChannel.inputOrderChannel)
+    public SubscribableChannel inputOrderChannel() {
         return MessageChannels.direct().get();
     }
 
-    @Bean(name = "aggregateChannel")
-    public SubscribableChannel aggregateChannel() {
+    @Bean(name = OrderChannel.aggregateOrderChannel)
+    public SubscribableChannel aggregateOrderChannel() {
         return MessageChannels.direct().get();
     }
 
@@ -65,7 +66,7 @@ public class OrderConfiguration {
     @Bean
     public IntegrationFlow getBooksFlow() {
         return IntegrationFlows
-                .from(inputChannel())
+                .from(inputOrderChannel())
                 .handle(getBooksHandler)
                 .filter(CollectionUtils::isNotEmpty, filterEndpointSpec -> filterEndpointSpec.discardFlow(discFlow -> discFlow
                         .handle((payload, messageHeaders) -> Collections.<RegisterViewDto>emptyList())
@@ -80,14 +81,14 @@ public class OrderConfiguration {
                                                         bookDto.getState().equals(StateEnum.BAD),
                                                 filterEndpointSpec -> filterEndpointSpec.discardFlow(discFlow -> discFlow
                                                         .handle((payload, messageHeaders) -> Collections.<BookDto>emptyList())
-                                                        .channel(aggregateChannel())
+                                                        .channel(aggregateOrderChannel())
                                                 ))
                                 )
                                 .subFlowMapping(HistoryDetailsDto.class, subFlow -> subFlow
                                         .filter(historyBooksFilter,
                                                 filterEndpointSpec -> filterEndpointSpec.discardFlow(discFlow -> discFlow
                                                         .handle((payload, messageHeaders) -> Collections.<BookDto>emptyList())
-                                                        .channel(aggregateChannel())
+                                                        .channel(aggregateOrderChannel())
                                                 ))
                                 )
                                 .defaultSubFlowMapping(subFlow -> subFlow
@@ -96,7 +97,7 @@ public class OrderConfiguration {
                 )
                 .handle(updateBookStateHandler)
                 .handle(createOrderProxyHandler)
-                .channel(aggregateChannel())
+                .channel(aggregateOrderChannel())
                 .aggregate(a -> a.processor(getBooksOrderAggregator()))
                 .filter(CollectionUtils::isNotEmpty, filterEndpointSpec -> filterEndpointSpec.discardFlow(discFlow -> discFlow
                         .handle((payload, messageHeaders) -> Collections.<RegisterViewDto>emptyList())
