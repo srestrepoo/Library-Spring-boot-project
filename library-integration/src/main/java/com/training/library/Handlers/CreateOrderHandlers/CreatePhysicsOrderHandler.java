@@ -33,7 +33,7 @@ public class CreatePhysicsOrderHandler implements ICreateOrderHandler {
     @Override
     public List<BookDto> handleOrder(BookDto bookDto) {
         BookDto newBookDto = bookDto.toBuilder().id(null).state(StateEnum.EXCELLENT).build();
-        List<BookDto> bookDtoList = new ArrayList();
+        List<BookDto> bookDtoList = new ArrayList<>();
         bookDtoList.add(bookService.createBook(newBookDto));
 
         if (bookDto.getState().equals(StateEnum.ACCEPTABLE)) {
