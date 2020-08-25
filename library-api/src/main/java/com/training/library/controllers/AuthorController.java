@@ -1,10 +1,11 @@
 package com.training.library.controllers;
 
 import com.training.library.IAuthorService;
-import com.training.library.dtos.AuthorDto;
-import com.training.library.dtos.AuthorViewDto;
-import com.training.library.enums.Language;
-import com.training.library.enums.Nationality;
+import com.training.library.dtos.Author.AuthorDto;
+import com.training.library.dtos.Author.AuthorViewDto;
+import com.training.library.dtos.Author.FilterAuthorDto;
+import com.training.library.enums.LanguageEnum;
+import com.training.library.enums.NationalityEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,15 +18,18 @@ import java.util.List;
 public class AuthorController {
 
     @Autowired
-    IAuthorService authorService;
+    private IAuthorService authorService;
 
     @GetMapping()
     public ResponseEntity<List<AuthorViewDto>> getAll(
             @RequestParam(required = false) String name,
-            @RequestParam(required = false) Language language,
-            @RequestParam(required = false) Nationality nationality
+            @RequestParam(required = false) LanguageEnum language,
+            @RequestParam(required = false) NationalityEnum nationality
     ) {
-        return new ResponseEntity<>(authorService.getAllAuthors(name, language, nationality), HttpStatus.OK);
+        FilterAuthorDto filterAuthorDto =
+                FilterAuthorDto.builder()
+                        .name(name).nationality(nationality).nativeLanguage(language).build();
+        return new ResponseEntity<>(authorService.getAllAuthorsView(filterAuthorDto), HttpStatus.OK);
     }
 
     @PostMapping
@@ -39,9 +43,9 @@ public class AuthorController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity createAuthor(@PathVariable Integer id) {
+    public ResponseEntity deleteAuthor(@PathVariable Integer id) {
         authorService.deleteAuthor(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

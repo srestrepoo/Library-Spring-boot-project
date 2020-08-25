@@ -1,9 +1,10 @@
 package com.training.library.entities;
 
-import com.training.library.enums.Currency;
-import com.training.library.enums.Language;
-import com.training.library.enums.State;
+import com.training.library.enums.CurrencyEnum;
+import com.training.library.enums.LanguageEnum;
+import com.training.library.enums.StateEnum;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
@@ -38,7 +39,7 @@ public class Book {
 
     @Column(name = "language")
     @Enumerated(EnumType.STRING)
-    private Language language;
+    private LanguageEnum language;
 
     @Column(name = "format")
     private String format;
@@ -48,19 +49,16 @@ public class Book {
 
     @Column(name = "state")
     @Enumerated(EnumType.STRING)
-    private State state;
+    private StateEnum state;
 
     @Column(name = "price")
     private Integer price;
 
     @Column(name = "currency")
     @Enumerated(EnumType.STRING)
-    private Currency currency;
+    private CurrencyEnum currency;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "book", fetch = FetchType.LAZY)
-    private MathDetails mathDetails;
-
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "book", fetch = FetchType.LAZY)
-    private HistoryDetails historyDetails;
+    @Column(name = "active", columnDefinition = "TINYINT(1)")
+    private Boolean active;
 
 }

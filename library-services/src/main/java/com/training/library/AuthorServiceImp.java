@@ -1,11 +1,10 @@
 package com.training.library;
 
-import com.training.library.dtos.AuthorDto;
-import com.training.library.dtos.AuthorViewDto;
-import com.training.library.dtos.BookDto;
+import com.training.library.dtos.Author.AuthorDto;
+import com.training.library.dtos.Author.AuthorViewDto;
+import com.training.library.dtos.Author.FilterAuthorDto;
+import com.training.library.dtos.Book.BookDto;
 import com.training.library.entities.Author;
-import com.training.library.enums.Language;
-import com.training.library.enums.Nationality;
 import com.training.library.exceptions.EntityNotFound;
 import com.training.library.mappers.AuthorMapper;
 import com.training.library.repositories.AuthorRepository;
@@ -15,13 +14,11 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,32 +38,37 @@ public class AuthorServiceImp implements IAuthorService {
 
     @Override
     @Transactional
-    public List<AuthorViewDto> getAllAuthors(String name, Language nativeLanguage, Nationality nationality) {
+    public List<AuthorViewDto> getAllAuthorsView(FilterAuthorDto filterAuthorDto) {
 
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Author> query = builder.createQuery(Author.class);
         Root<Author> author = query.from(Author.class);
         query.select(author);
 
-        List<Predicate> filters = new ArrayList<>();
-        if (!StringUtils.isEmpty(name)) {
-            filters.add(builder.like(author.get("name"), "%" + name + "%"));
-        }
-
-        if (nativeLanguage != null) {
-            filters.add(builder.equal(author.get("nativeLanguage"), nativeLanguage));
-        }
-
-        if (nationality != null) {
-            filters.add(builder.equal(author.get("nationality"), nationality));
-        }
-
-        query.where(filters.toArray(new Predicate[]{}));
+        query.where(addAuthorFilters(author, builder, filterAuthorDto));
 
         return entityManager.createQuery(query).getResultList().stream()
                 .map(this::getBooksNumberByAuthor)
                 .collect(Collectors.toList());
 
+    }
+
+    @Override
+    @Transactional
+    public List<AuthorDto> getAllAuthors(FilterAuthorDto filterAuthorDto) {
+
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Author> query = builder.createQuery(Author.class);
+        Root<Author> author = query.from(Author.class);
+        query.select(author);
+
+        query.where(addAuthorFilters(author, builder, filterAuthorDto));
+
+        return entityManager.createQuery(query)
+                .setMaxResults(Optional.ofNullable(filterAuthorDto.getMaxResults()).orElse(20))
+                .getResultStream()
+                .map(authorMapper::authorToAuthorDto)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -105,5 +107,23 @@ public class AuthorServiceImp implements IAuthorService {
         authorViewDto.setNativeLanguageBooks(Math.toIntExact(nativeLanguageBooks));
         authorViewDto.setForeignLanguageBooks(books.size() - Math.toIntExact(nativeLanguageBooks));
         return authorViewDto;
+    }
+
+    private Predicate[] addAuthorFilters(Root author, CriteriaBuilder builder, FilterAuthorDto filterAuthorDto) {
+        List<Predicate> filters = new ArrayList<>();
+
+        if (!StringUtils.isEmpty(filterAuthorDto.getName())) {
+            filters.add(builder.like(author.get("name"), "%" + filterAuthorDto.getName() + "%"));
+        }
+
+        if (filterAuthorDto.getNativeLanguage() != null) {
+            filters.add(builder.equal(author.get("nativeLanguage"), filterAuthorDto.getNativeLanguage()));
+        }
+
+        if (filterAuthorDto.getNationality() != null) {
+            filters.add(builder.equal(author.get("nationality"), filterAuthorDto.getNationality()));
+        }
+
+        return filters.toArray(new Predicate[]{});
     }
 }

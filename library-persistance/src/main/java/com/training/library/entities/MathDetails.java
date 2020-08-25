@@ -26,7 +26,7 @@ public class MathDetails {
     @Column(name = "answer")
     private String answer;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval=true)
     @JoinColumn(name = "book_id")
     @MapsId
     private Book book;

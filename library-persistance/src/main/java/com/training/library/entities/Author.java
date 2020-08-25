@@ -1,7 +1,7 @@
 package com.training.library.entities;
 
-import com.training.library.enums.Language;
-import com.training.library.enums.Nationality;
+import com.training.library.enums.LanguageEnum;
+import com.training.library.enums.NationalityEnum;
 import lombok.*;
 
 import javax.persistence.*;
@@ -24,10 +24,10 @@ public class Author {
 
     @Column(name = "nationality")
     @Enumerated(EnumType.STRING)
-    private Nationality nationality;
+    private NationalityEnum nationality;
 
     @Column(name = "native_language")
     @Enumerated(EnumType.STRING)
-    private Language nativeLanguage;
+    private LanguageEnum nativeLanguage;
 
 }

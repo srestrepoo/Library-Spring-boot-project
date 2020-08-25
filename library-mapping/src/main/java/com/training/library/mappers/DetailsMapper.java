@@ -1,12 +1,16 @@
 package com.training.library.mappers;
 
-import com.training.library.dtos.HistoryDetailsDto;
-import com.training.library.dtos.MathDetailsDto;
+import com.training.library.dtos.Book.DetailBookViewDto;
+import com.training.library.dtos.Details.HistoryDetailsDto;
+import com.training.library.dtos.Details.MathDetailsDto;
+import com.training.library.dtos.Details.PhysicsDetailsDto;
 import com.training.library.entities.Book;
 import com.training.library.entities.HistoryDetails;
 import com.training.library.entities.MathDetails;
+import com.training.library.entities.PhysicsDetails;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface DetailsMapper {
@@ -17,9 +21,34 @@ public interface DetailsMapper {
 
     MathDetailsDto mathDetailsToDto(MathDetails mathDetails);
 
+    MathDetailsDto detailBookToMathDetailsDto(DetailBookViewDto detailBookViewDto);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "book", source = "book")
+    void updateMathDetails(@MappingTarget MathDetails mathDetails, MathDetailsDto mathDetailsDto, Book book);
+
     @Mapping(source = "newBook", target = "book")
     @Mapping(target = "id", ignore = true)
     HistoryDetails dtoToHistoryDetails(HistoryDetailsDto historyDetailsDto, Book newBook);
 
     HistoryDetailsDto historyDetailsToDto(HistoryDetails historyDetailsDto);
+
+    HistoryDetailsDto detailBookToHistoryDetailsDto(DetailBookViewDto detailBookViewDto);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "book", source = "book")
+    void updateHistoryDetails(@MappingTarget HistoryDetails historyDetails, HistoryDetailsDto historyDetailsDto, Book book);
+
+    @Mapping(source = "newBook", target = "book")
+    @Mapping(target = "id", ignore = true)
+    PhysicsDetails dtoToPhysicsDetails(PhysicsDetailsDto physicsDetailsDto, Book newBook);
+
+    PhysicsDetailsDto physicsDetailsToDto(PhysicsDetails physicsDetails);
+
+    PhysicsDetailsDto detailBookToPhysicsDetailsDto(DetailBookViewDto detailBookViewDto);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "book", source = "book")
+    void updatePhysicsDetails(@MappingTarget PhysicsDetails physicsDetails, PhysicsDetailsDto physicsDetailsDto, Book book);
+
 }
