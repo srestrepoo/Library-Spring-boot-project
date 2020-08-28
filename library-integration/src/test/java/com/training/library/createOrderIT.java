@@ -62,7 +62,7 @@ public class createOrderIT {
         mathTestBook = BookDto.builder()
                 .id(1).authorId(1).title("Test title").active(true).state(StateEnum.ACCEPTABLE)
                 .language(LanguageEnum.FRENCH).currency(CurrencyEnum.USD).editorial("Edit Test")
-                .format("Display").pages(100).year(1990).price(20).isbn("123")
+                .format("Display").pages(100).year(1990).price(20.0).isbn("123")
                 .detailsDto(mathDetailsDto)
                 .build();
     }

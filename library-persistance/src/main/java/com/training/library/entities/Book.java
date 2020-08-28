@@ -52,7 +52,7 @@ public class Book {
     private StateEnum state;
 
     @Column(name = "price")
-    private Integer price;
+    private Double price;
 
     @Column(name = "currency")
     @Enumerated(EnumType.STRING)

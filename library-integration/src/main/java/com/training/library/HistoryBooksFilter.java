@@ -19,7 +19,7 @@ public class HistoryBooksFilter implements MessageSelector {
         }
     }
 
-    private Boolean differentCurrency(Integer price, CurrencyEnum currency){
+    private Boolean differentCurrency(Double price, CurrencyEnum currency){
         if(currency.equals(CurrencyEnum.COP)){
             return price <= 135000;
         } else if(currency.equals(CurrencyEnum.EUR)){

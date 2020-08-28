@@ -32,7 +32,7 @@ public class BookDto {
     @NonNull
     private StateEnum state;
     @NonNull
-    private Integer price;
+    private Double price;
     @NonNull
     private CurrencyEnum currency;
 
