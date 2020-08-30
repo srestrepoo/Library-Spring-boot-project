@@ -10,7 +10,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.*;
 @JsonSubTypes({
         @JsonSubTypes.Type(value = MathDetailsDto.class, name = "Mathematics"),
         @JsonSubTypes.Type(value = HistoryDetailsDto.class, name = "History"),
-        @JsonSubTypes.Type(value = PhysicsDetailsDto.class, name = "Physics")
+        @JsonSubTypes.Type(value = PhysicsDetailsDto.class, name = "Physics"),
+
 })
 public interface DetailsDto {
 }

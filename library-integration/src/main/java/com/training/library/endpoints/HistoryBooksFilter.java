@@ -1,4 +1,4 @@
-package com.training.library;
+package com.training.library.endpoints;
 
 import com.training.library.dtos.Book.BookDto;
 import com.training.library.enums.CurrencyEnum;

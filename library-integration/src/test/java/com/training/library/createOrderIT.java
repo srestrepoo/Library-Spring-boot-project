@@ -3,18 +3,14 @@ package com.training.library;
 import com.training.library.dtos.Author.AuthorDto;
 import com.training.library.dtos.Author.FilterAuthorDto;
 import com.training.library.dtos.Book.BookDto;
-import com.training.library.dtos.Book.BookViewDto;
 import com.training.library.dtos.Book.FilterBookDto;
 import com.training.library.dtos.BookOrder.BookOrderDto;
-import com.training.library.dtos.Details.DetailsDto;
 import com.training.library.dtos.Details.MathDetailsDto;
-import com.training.library.dtos.ExternalLibrary.ExternalAuthorDto;
 import com.training.library.dtos.ExternalLibrary.ExternalAuthorFilterDto;
 import com.training.library.dtos.ExternalLibrary.ExternalCredentialsDto;
 import com.training.library.dtos.ExternalLibrary.ExternalGeneralInfoDto;
 import com.training.library.dtos.Register.RegisterDto;
 import com.training.library.dtos.Register.RegisterViewDto;
-import com.training.library.entities.Author;
 import com.training.library.enums.CurrencyEnum;
 import com.training.library.enums.LanguageEnum;
 import com.training.library.enums.StateEnum;
@@ -30,11 +26,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = LibraryApplication.class)
@@ -120,13 +113,17 @@ public class createOrderIT {
     private ExternalLibraryMapper externalLibraryMapper;
 
     @Autowired
+    private ExternalBooksGateway externalBooksGateway;
+
+    @Autowired
     private IAuthorService authorService;
 
     @Test
     public void testLogin() {
         ExternalCredentialsDto credentialsDto = externalLibraryService.getCredentials();
 
-        ExternalGeneralInfoDto[] list = externalLibraryService.getExternalGeneralInfo(credentialsDto.getToken());
+        externalBooksGateway.addExternalBooks("null");
+//        ExternalGeneralInfoDto[] list = externalLibraryService.getExternalGeneralInfo(credentialsDto.getToken());
 
 //        List<AuthorDto> authors = Arrays.stream(list)
 //                .map(externalGeneralInfoDto ->
@@ -134,18 +131,23 @@ public class createOrderIT {
 //                                ExternalAuthorFilterDto.builder().nombre(externalGeneralInfoDto.getAutor()).build()))
 //                .map(externalAuthorDto -> externalLibraryMapper.externalAuthorDtoToAuthorDto(externalAuthorDto))
 //                .collect(Collectors.toList());
-
-        AuthorDto authorDto = externalLibraryMapper.externalAuthorDtoToAuthorDto(
-                externalLibraryService.getExternalAuthor(credentialsDto.getToken(),
-                        ExternalAuthorFilterDto.builder().nombre(list[0].getAutor()).build()
-                ));
-        FilterAuthorDto filterAuthorDto = FilterAuthorDto.builder().name(authorDto.getName())
-                .nationality(authorDto.getNationality()).nativeLanguage(authorDto.getNativeLanguage()).maxResults(1).build();
-
-        List<AuthorDto> authorResult = authorService.getAllAuthors(filterAuthorDto);
-        AuthorDto persistedAuthorDto = (authorResult.size() > 0)? authorResult.get(0) : authorService.createAuthor(authorDto);
-
-
-        System.out.println("Hi");
+//        ExternalGeneralInfoDto generalInfoDto = list[0];
+//
+//        AuthorDto authorDto = externalLibraryMapper.externalAuthorDtoToAuthorDto(
+//                externalLibraryService.getExternalAuthor(credentialsDto.getToken(),
+//                        ExternalAuthorFilterDto.builder().nombre(list[0].getAutor()).build()
+//                ));
+//        FilterAuthorDto filterAuthorDto = FilterAuthorDto.builder().name(authorDto.getName())
+//                .nationality(authorDto.getNationality()).nativeLanguage(authorDto.getNativeLanguage()).maxResults(1).build();
+//
+//        List<AuthorDto> authorResult = authorService.getAllAuthors(filterAuthorDto);
+//        AuthorDto persistedAuthorDto = (authorResult.size() > 0)? authorResult.get(0) : authorService.createAuthor(authorDto);
+//
+//        List<BookDto> bookDtoList = list[0].getLibros().stream().map(externalBookDto ->
+//                externalLibraryMapper.externalBookDtoToBookDto(
+//                        externalBookDto, persistedAuthorDto, generalInfoDto.getFormato(), generalInfoDto.getEditorial())
+//        ).collect(Collectors.toList());
+//
+       System.out.println("Hi");
     }
 }
