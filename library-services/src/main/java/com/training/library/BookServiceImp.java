@@ -55,6 +55,9 @@ public class BookServiceImp implements IBookService {
     private PhysicsDetailsRepository physicsDetailsRepository;
 
     @Autowired
+    private ExternalDetailsRepository externalDetailsRepository;
+
+    @Autowired
     private DetailsServiceProxy detailsServiceProxy;
 
     @PersistenceContext
@@ -271,6 +274,9 @@ public class BookServiceImp implements IBookService {
         } else if (mathDetailsRepository.findById(id).isPresent()) {
             registerRepository.deleteByBookId(id);
             mathDetailsRepository.deleteById(id);
+        } else if (externalDetailsRepository.findById(id).isPresent()) {
+            registerRepository.deleteByBookId(id);
+            externalDetailsRepository.deleteById(id);
         } else {
             throw new EntityNotFound();
         }

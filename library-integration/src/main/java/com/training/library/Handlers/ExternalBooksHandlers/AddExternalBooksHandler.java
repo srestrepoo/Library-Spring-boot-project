@@ -1,7 +1,9 @@
 package com.training.library.Handlers.ExternalBooksHandlers;
 
+import com.training.library.IBookService;
 import com.training.library.dtos.Author.AuthorDto;
 import com.training.library.dtos.Book.BookDto;
+import com.training.library.dtos.Details.ExternalDetailsDto;
 import com.training.library.dtos.ExternalLibrary.ExternalGeneralInfoDto;
 import com.training.library.mappers.ExternalLibraryMapper;
 import org.apache.commons.lang3.tuple.Pair;
@@ -21,6 +23,9 @@ public class AddExternalBooksHandler implements GenericHandler<Pair<AuthorDto, E
     @Autowired
     private ExternalLibraryMapper externalLibraryMapper;
 
+    @Autowired
+    private IBookService bookService;
+
     @Override
     public Message<List<BookDto>> handle(Pair<AuthorDto, ExternalGeneralInfoDto> messagePair, MessageHeaders messageHeaders) {
         List<BookDto> bookDtoList = messagePair.getRight().getLibros().stream()
@@ -28,6 +33,8 @@ public class AddExternalBooksHandler implements GenericHandler<Pair<AuthorDto, E
                         externalBookDto, messagePair.getLeft(), messagePair.getRight().getFormato(), messagePair.getRight().getEditorial())
         ).collect(Collectors.toList());
 
-        return MessageBuilder.withPayload(bookDtoList).build();
+        List<BookDto> createdBooks = bookService.createBookCopies(messagePair.getLeft().getId(), new ExternalDetailsDto(), bookDtoList);
+
+        return MessageBuilder.withPayload(createdBooks).build();
     }
 }

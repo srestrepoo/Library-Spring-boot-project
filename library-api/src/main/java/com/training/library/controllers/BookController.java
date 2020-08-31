@@ -28,6 +28,9 @@ public class BookController {
     @Autowired
     private OrderGateway orderGateway;
 
+    @Autowired
+    private ExternalBooksGateway externalBooksGateway;
+
     @GetMapping("/integration")
     public ResponseEntity<List<RegisterViewDto>> integration(
             @RequestParam(required = false) String bookName,
@@ -52,6 +55,11 @@ public class BookController {
         List<RegisterViewDto> registerViewDtoList = orderGateway.createOrder(filterBookDto);
 
         return new ResponseEntity<>(registerViewDtoList, HttpStatus.OK);
+    }
+
+    @GetMapping("/integration1")
+    public ResponseEntity<List<BookDto>> integration1() {
+        return new ResponseEntity(externalBooksGateway.addExternalBooks("1"), HttpStatus.OK);
     }
 
     @GetMapping()

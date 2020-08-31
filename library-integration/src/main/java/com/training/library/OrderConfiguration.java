@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.function.Function;
 
 @Configuration
 public class OrderConfiguration {
@@ -92,7 +93,7 @@ public class OrderConfiguration {
                                                 ))
                                 )
                                 .defaultSubFlowMapping(subFlow -> subFlow
-                                       .transform(bookDto -> Arrays.asList(bookDto))
+                                       .handle((payload, messageHeaders) -> payload)
                                 )
                 )
                 .handle(updateBookStateHandler)

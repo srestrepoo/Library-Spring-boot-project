@@ -31,6 +31,6 @@ public interface ExternalLibraryMapper {
     @Mapping(target = "authorId", source = "authorDto.id")
     @Mapping(target = "language", source = "authorDto.nativeLanguage")
     @Mapping(target = "format", source = "format")
-    @Mapping(target = "editorial", source = "format")
-    BookDto externalBookDtoToBookDto(ExternalBookDto externalBookDto, AuthorDto authorDto, String format, String Editorial);
+    @Mapping(target = "editorial", source = "editorial")
+    BookDto externalBookDtoToBookDto(ExternalBookDto externalBookDto, AuthorDto authorDto, String format, String editorial);
 }
