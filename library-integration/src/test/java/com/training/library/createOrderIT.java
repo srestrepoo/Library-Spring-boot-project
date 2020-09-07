@@ -105,49 +105,4 @@ public class createOrderIT {
         Assertions.assertEquals(integrationResult.get(0).getBookOrderId(), 1);
 
     }
-
-    @Autowired
-    private IExternalLibraryService externalLibraryService;
-
-    @Autowired
-    private ExternalLibraryMapper externalLibraryMapper;
-
-    @Autowired
-    private ExternalBooksGateway externalBooksGateway;
-
-    @Autowired
-    private IAuthorService authorService;
-
-    @Test
-    public void testLogin() {
-        ExternalCredentialsDto credentialsDto = externalLibraryService.getCredentials();
-
-        externalBooksGateway.addExternalBooks("null");
-//        ExternalGeneralInfoDto[] list = externalLibraryService.getExternalGeneralInfo(credentialsDto.getToken());
-
-//        List<AuthorDto> authors = Arrays.stream(list)
-//                .map(externalGeneralInfoDto ->
-//                        externalLibraryService.getExternalAuthor(credentialsDto.getToken(),
-//                                ExternalAuthorFilterDto.builder().nombre(externalGeneralInfoDto.getAutor()).build()))
-//                .map(externalAuthorDto -> externalLibraryMapper.externalAuthorDtoToAuthorDto(externalAuthorDto))
-//                .collect(Collectors.toList());
-//        ExternalGeneralInfoDto generalInfoDto = list[0];
-//
-//        AuthorDto authorDto = externalLibraryMapper.externalAuthorDtoToAuthorDto(
-//                externalLibraryService.getExternalAuthor(credentialsDto.getToken(),
-//                        ExternalAuthorFilterDto.builder().nombre(list[0].getAutor()).build()
-//                ));
-//        FilterAuthorDto filterAuthorDto = FilterAuthorDto.builder().name(authorDto.getName())
-//                .nationality(authorDto.getNationality()).nativeLanguage(authorDto.getNativeLanguage()).maxResults(1).build();
-//
-//        List<AuthorDto> authorResult = authorService.getAllAuthors(filterAuthorDto);
-//        AuthorDto persistedAuthorDto = (authorResult.size() > 0)? authorResult.get(0) : authorService.createAuthor(authorDto);
-//
-//        List<BookDto> bookDtoList = list[0].getLibros().stream().map(externalBookDto ->
-//                externalLibraryMapper.externalBookDtoToBookDto(
-//                        externalBookDto, persistedAuthorDto, generalInfoDto.getFormato(), generalInfoDto.getEditorial())
-//        ).collect(Collectors.toList());
-//
-       System.out.println("Hi");
-    }
 }

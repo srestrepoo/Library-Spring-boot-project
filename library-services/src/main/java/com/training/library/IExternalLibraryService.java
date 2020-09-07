@@ -1,13 +1,10 @@
 package com.training.library;
 
-import com.training.library.dtos.ExternalLibrary.ExternalAuthorDto;
-import com.training.library.dtos.ExternalLibrary.ExternalAuthorFilterDto;
-import com.training.library.dtos.ExternalLibrary.ExternalCredentialsDto;
-import com.training.library.dtos.ExternalLibrary.ExternalGeneralInfoDto;
+import com.training.library.dtos.ExternalLibrary.*;
 
 public interface IExternalLibraryService {
 
-    ExternalCredentialsDto getCredentials();
+    ExternalCredentialsDto getCredentials(ExternalLoginDto externalLoginDto);
 
     ExternalGeneralInfoDto[] getExternalGeneralInfo(String accessToken);
 

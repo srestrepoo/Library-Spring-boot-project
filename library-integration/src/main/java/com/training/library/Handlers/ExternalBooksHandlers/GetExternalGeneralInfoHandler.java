@@ -10,13 +10,13 @@ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 
 @Component
-public class GetExternalGeneralInfoHandler implements GenericHandler<String> {
+public class GetExternalGeneralInfoHandler implements GenericHandler<Object> {
 
     @Autowired
     private IExternalLibraryService externalLibraryService;
 
     @Override
-    public Message<ExternalGeneralInfoDto[]> handle(String o, MessageHeaders messageHeaders) {
+    public Message<ExternalGeneralInfoDto[]> handle(Object o, MessageHeaders messageHeaders) {
 
         ExternalGeneralInfoDto[] generalInfoList = externalLibraryService
                 .getExternalGeneralInfo(messageHeaders.get("externalToken").toString());

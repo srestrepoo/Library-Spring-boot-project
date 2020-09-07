@@ -31,15 +31,11 @@ public class ExternalLibraryServiceImp implements IExternalLibraryService {
     }
 
     @Override
-    public ExternalCredentialsDto getCredentials() {
+    public ExternalCredentialsDto getCredentials(ExternalLoginDto externalLoginDto) {
         String loginUrl
                 = env.getProperty(ExternalPropertyEnum.BASE_URL.getValue()) + "/login";
 
-        HttpEntity<ExternalLoginDto> request = new HttpEntity<>(
-                ExternalLoginDto.builder()
-                        .nombreUsuario(env.getProperty(ExternalPropertyEnum.USERNAME.getValue()))
-                        .contrasena(env.getProperty(ExternalPropertyEnum.PASSWORD.getValue()))
-                        .build());
+        HttpEntity<ExternalLoginDto> request = new HttpEntity<>(externalLoginDto);
 
         return restTemplate.exchange(loginUrl, HttpMethod.POST, request, ExternalCredentialsDto.class).getBody();
     }
