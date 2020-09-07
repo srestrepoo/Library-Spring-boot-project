@@ -29,6 +29,9 @@ public interface BookMapper {
     @Mapping(target = "author", source = "newAuthor")
     void updateBookFromDto(@MappingTarget Book book, BookDto bookDto, Author newAuthor);
 
+    @Mapping(target = "id", ignore = true)
+    void updateBookDtoFromDto(@MappingTarget BookDto bookToUpdate, BookDto bookDto);
+
     @Mapping(source = "detailsDto", target = "details")
     BookViewDto detailBookViewToBookViewDto(DetailBookViewDto detailBookViewDto, DetailsDto detailsDto);
 

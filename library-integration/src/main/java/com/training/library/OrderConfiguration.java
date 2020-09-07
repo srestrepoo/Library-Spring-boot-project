@@ -8,6 +8,8 @@ import com.training.library.dtos.Book.BookDto;
 import com.training.library.dtos.Details.HistoryDetailsDto;
 import com.training.library.dtos.Details.MathDetailsDto;
 import com.training.library.dtos.Register.RegisterViewDto;
+import com.training.library.endpoints.BooksAggregator;
+import com.training.library.endpoints.HistoryBooksFilter;
 import com.training.library.enums.StateEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -18,12 +20,11 @@ import org.springframework.integration.dsl.MessageChannels;
 import org.springframework.messaging.SubscribableChannel;
 import org.apache.commons.collections4.CollectionUtils;
 
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-
+import java.util.function.Function;
 
 @Configuration
 public class OrderConfiguration {
@@ -59,8 +60,8 @@ public class OrderConfiguration {
     }
 
     @Bean
-    public BooksOrderAggregator getBooksOrderAggregator() {
-        return new BooksOrderAggregator();
+    public BooksAggregator getBooksOrderAggregator() {
+        return new BooksAggregator();
     }
 
     @Bean
@@ -92,7 +93,7 @@ public class OrderConfiguration {
                                                 ))
                                 )
                                 .defaultSubFlowMapping(subFlow -> subFlow
-                                       .transform(bookDto -> Arrays.asList(bookDto))
+                                       .handle((payload, messageHeaders) -> payload)
                                 )
                 )
                 .handle(updateBookStateHandler)

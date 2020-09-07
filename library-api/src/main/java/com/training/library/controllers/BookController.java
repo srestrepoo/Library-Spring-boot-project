@@ -1,15 +1,19 @@
 package com.training.library.controllers;
 
+import com.training.library.ExternalBooksGateway;
 import com.training.library.IBookService;
 import com.training.library.OrderGateway;
 import com.training.library.dtos.Book.BookDto;
 import com.training.library.dtos.Book.BookViewDto;
 import com.training.library.dtos.Book.FilterBookDto;
+import com.training.library.dtos.ExternalLibrary.ExternalLoginDto;
 import com.training.library.dtos.Register.RegisterDto;
 import com.training.library.dtos.Register.RegisterViewDto;
+import com.training.library.enums.ExternalPropertyEnum;
 import com.training.library.enums.LanguageEnum;
 import com.training.library.enums.StateEnum;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +30,12 @@ public class BookController {
 
     @Autowired
     private OrderGateway orderGateway;
+
+    @Autowired
+    private ExternalBooksGateway externalBooksGateway;
+
+    @Autowired
+    private Environment env;
 
     @GetMapping("/integration")
     public ResponseEntity<List<RegisterViewDto>> integration(
@@ -51,6 +61,15 @@ public class BookController {
         List<RegisterViewDto> registerViewDtoList = orderGateway.createOrder(filterBookDto);
 
         return new ResponseEntity<>(registerViewDtoList, HttpStatus.OK);
+    }
+
+    @GetMapping("/external-integration")
+    public ResponseEntity<List<BookDto>> externalIntegration() {
+        ExternalLoginDto externalLoginDto = ExternalLoginDto.builder()
+                .nombreUsuario(env.getProperty(ExternalPropertyEnum.USERNAME.getValue()))
+                .contrasena(env.getProperty(ExternalPropertyEnum.PASSWORD.getValue()))
+                .build();
+        return new ResponseEntity(externalBooksGateway.addExternalBooks(externalLoginDto), HttpStatus.OK);
     }
 
     @GetMapping()

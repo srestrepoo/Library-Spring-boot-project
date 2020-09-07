@@ -16,14 +16,20 @@ public interface IBookService {
 
     List<BookDto> getBooksByAuthorId(Integer id);
 
+    List<BookDto> getBooksByIsbnList(List<String> isbnList);
+
     BookDto createBook(BookDto newBook);
 
     List<BookDto> createBookCopies(Integer authorId, DetailsDto detailsDto, List<BookDto> newBooksDto);
 
     BookDto updateBook(Integer bookId, BookDto bookDto);
 
+    List<BookDto> updateBooksWithoutDetails(Integer authorId, List<BookDto> booksToUpdateDto);
+
     void updateStateAndActiveById(Integer id, StateEnum state);
 
     void deleteBook(Integer id);
+
+    void deleteObsoleteExternalBooks(List<String> isbnList);
 
 }

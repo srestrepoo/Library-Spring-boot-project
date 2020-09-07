@@ -26,7 +26,7 @@ public class DetailBookViewDto {
     private String format;
     private String isbn;
     private StateEnum state;
-    private Integer price;
+    private Double price;
     private CurrencyEnum currency;
 
     private String subcategory;

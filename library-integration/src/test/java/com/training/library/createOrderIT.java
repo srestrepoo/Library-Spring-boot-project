@@ -1,17 +1,20 @@
 package com.training.library;
 
+import com.training.library.dtos.Author.AuthorDto;
 import com.training.library.dtos.Author.FilterAuthorDto;
 import com.training.library.dtos.Book.BookDto;
-import com.training.library.dtos.Book.BookViewDto;
 import com.training.library.dtos.Book.FilterBookDto;
 import com.training.library.dtos.BookOrder.BookOrderDto;
-import com.training.library.dtos.Details.DetailsDto;
 import com.training.library.dtos.Details.MathDetailsDto;
+import com.training.library.dtos.ExternalLibrary.ExternalAuthorFilterDto;
+import com.training.library.dtos.ExternalLibrary.ExternalCredentialsDto;
+import com.training.library.dtos.ExternalLibrary.ExternalGeneralInfoDto;
 import com.training.library.dtos.Register.RegisterDto;
 import com.training.library.dtos.Register.RegisterViewDto;
 import com.training.library.enums.CurrencyEnum;
 import com.training.library.enums.LanguageEnum;
 import com.training.library.enums.StateEnum;
+import com.training.library.mappers.ExternalLibraryMapper;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
@@ -52,7 +55,7 @@ public class createOrderIT {
         mathTestBook = BookDto.builder()
                 .id(1).authorId(1).title("Test title").active(true).state(StateEnum.ACCEPTABLE)
                 .language(LanguageEnum.FRENCH).currency(CurrencyEnum.USD).editorial("Edit Test")
-                .format("Display").pages(100).year(1990).price(20).isbn("123")
+                .format("Display").pages(100).year(1990).price(20.0).isbn("123")
                 .detailsDto(mathDetailsDto)
                 .build();
     }
@@ -96,11 +99,10 @@ public class createOrderIT {
 
         List<RegisterViewDto> integrationResult = orderGateway.createOrder(filterBookDto);
 
+        Mockito.verify(bookServiceMock, Mockito.times(1)).updateStateAndActiveById(1, StateEnum.BAD);
         Assertions.assertEquals(integrationResult.size(), 1);
         Assertions.assertEquals(integrationResult.get(0).getBookId(), 2);
         Assertions.assertEquals(integrationResult.get(0).getBookOrderId(), 1);
 
-        //List<BookViewDto> bookDtoList = bookServiceMock.getAllBooksView(filterBookDto);
-        //System.out.println(bookDtoList);
     }
 }

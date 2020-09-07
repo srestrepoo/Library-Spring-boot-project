@@ -14,6 +14,7 @@ import com.training.library.mappers.DetailsMapper;
 import com.training.library.repositories.*;
 import com.training.library.specifications.BookSpecification;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -53,6 +54,9 @@ public class BookServiceImp implements IBookService {
 
     @Autowired
     private PhysicsDetailsRepository physicsDetailsRepository;
+
+    @Autowired
+    private ExternalDetailsRepository externalDetailsRepository;
 
     @Autowired
     private DetailsServiceProxy detailsServiceProxy;
@@ -213,6 +217,13 @@ public class BookServiceImp implements IBookService {
     }
 
     @Override
+    public List<BookDto> getBooksByIsbnList(List<String> isbnList) {
+        return bookRepository.getBooksByIsbnList(isbnList).stream()
+                .map(book -> bookMapper.bookToBookDto(book))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     @Transactional
     public BookDto createBook(BookDto newBook) {
         Author author = authorRepository.findById(newBook.getAuthorId()).orElseThrow(EntityNotFound::new);
@@ -254,6 +265,22 @@ public class BookServiceImp implements IBookService {
 
     @Override
     @Transactional
+    public List<BookDto> updateBooksWithoutDetails(Integer authorId, List<BookDto> booksToUpdateDto) {
+
+        Author author = authorRepository.findById(authorId).orElseThrow(EntityNotFound::new);
+
+        List<Book> bookToUpdate = booksToUpdateDto.stream().map(
+                bookDto -> bookMapper.bookDtoToBook(bookDto, author)
+        ).collect(Collectors.toList());
+
+        return bookRepository.saveAll(bookToUpdate).stream().map(
+                book -> bookMapper.bookToBookDto(book)
+        ).collect(Collectors.toList());
+
+    }
+
+    @Override
+    @Transactional
     public void updateStateAndActiveById(Integer id, StateEnum state) {
         bookRepository.updateStateAndActiveById(id, state, !state.equals(StateEnum.DISCARDED));
     }
@@ -261,7 +288,6 @@ public class BookServiceImp implements IBookService {
     @Override
     @Transactional
     public void deleteBook(Integer id) {
-
         if (physicsDetailsRepository.findById(id).isPresent()) {
             registerRepository.deleteByBookId(id);
             physicsDetailsRepository.deleteById(id);
@@ -271,8 +297,29 @@ public class BookServiceImp implements IBookService {
         } else if (mathDetailsRepository.findById(id).isPresent()) {
             registerRepository.deleteByBookId(id);
             mathDetailsRepository.deleteById(id);
+        } else if (externalDetailsRepository.findById(id).isPresent()) {
+            registerRepository.deleteByBookId(id);
+            externalDetailsRepository.deleteById(id);
         } else {
             throw new EntityNotFound();
+        }
+    }
+
+    @Override
+    @Transactional
+    public void deleteObsoleteExternalBooks(List<String> isbnList) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Integer> query = builder.createQuery(Integer.class);
+
+        Root<ExternalDetails> externalDetails = query.from(ExternalDetails.class);
+        Join<ExternalDetails, Book> book = externalDetails.join(ExternalDetails_.book, JoinType.INNER);
+        query.select(builder.construct(Integer.class, book.get(Book_.id)));
+        query.where(builder.not(book.get(Book_.isbn).in(isbnList)));
+
+        List<Integer> bookIdsToDelete = entityManager.createQuery(query).getResultList();
+        if(bookIdsToDelete.size() > 0){
+            externalDetailsRepository.deleteDetails(bookIdsToDelete);
+            bookRepository.deleteBooks(bookIdsToDelete);
         }
     }
 

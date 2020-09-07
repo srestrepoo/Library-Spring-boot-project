@@ -1,13 +1,11 @@
 package com.training.library.mappers;
 
 import com.training.library.dtos.Book.DetailBookViewDto;
+import com.training.library.dtos.Details.ExternalDetailsDto;
 import com.training.library.dtos.Details.HistoryDetailsDto;
 import com.training.library.dtos.Details.MathDetailsDto;
 import com.training.library.dtos.Details.PhysicsDetailsDto;
-import com.training.library.entities.Book;
-import com.training.library.entities.HistoryDetails;
-import com.training.library.entities.MathDetails;
-import com.training.library.entities.PhysicsDetails;
+import com.training.library.entities.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -51,4 +49,16 @@ public interface DetailsMapper {
     @Mapping(target = "book", source = "book")
     void updatePhysicsDetails(@MappingTarget PhysicsDetails physicsDetails, PhysicsDetailsDto physicsDetailsDto, Book book);
 
+
+    @Mapping(source = "newBook", target = "book")
+    @Mapping(target = "id", ignore = true)
+    ExternalDetails dtoToExternalDetails(ExternalDetailsDto externalDetailsDto, Book newBook);
+
+    ExternalDetailsDto externalDetailsToDto(ExternalDetails physicsDetails);
+
+    ExternalDetailsDto detailBookToExternalDetailsDto(DetailBookViewDto detailBookViewDto);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "book", source = "book")
+    void updateExternalDetails(@MappingTarget ExternalDetails externalDetails, ExternalDetailsDto externalDetailsDto, Book book);
 }
